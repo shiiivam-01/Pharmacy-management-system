@@ -2,7 +2,7 @@
 
 > A menu-driven Python application that lets a pharmacy manage medicine stock, expiry dates, suppliers, staff, billing, alerts and reports in one place.
 
-**Status:** In development. Progress is tracked in [docs/implementation-plan.md](docs/implementation-plan.md). The setup commands below apply once Priority 0 (foundation) is complete.
+**Status:** v1.0 Released. All Phase 0-3 tasks have been successfully completed. Development progress was tracked in [docs/implementation-plan.md](docs/implementation-plan.md).
 
 ---
 

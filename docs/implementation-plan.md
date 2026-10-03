@@ -147,12 +147,12 @@ Not part of this project. Pick one only after P3 is done and documented.
 
 | ID | Task | Est. | When | Done when | Status |
 |---|---|:---:|---|---|:---:|
-| D-01 | Export the ER diagram and layer diagram as images for the report | 0.5 h | after P0 | Images saved in `docs/images/` | ☐ |
-| D-02 | Test-case table: ID, scenario, input, expected result, actual result, pass or fail | 1.5 h | after P2 | Covers every P1 and P2 requirement | ☐ |
-| D-03 | Screenshots of each main flow (login, receive stock, bill, alerts, reports) | 0.5 h | after P2 | Saved in `docs/images/` and linked from the README | ☐ |
-| D-04 | Short user manual: how an Admin and a Pharmacist use the system | 1 h | after P2 | One page per role | ☐ |
-| D-05 | Update README status, features and limitations to match what is built | 0.5 h | at the end | No statement in the README is untrue | ☐ |
-| D-06 | Tag release `v1.0` in Git and write release notes | 1 h | at the end | Tag exists; notes list what is included | ☐ |
+| D-01 | Export the ER diagram and layer diagram as images for the report | 0.5 h | after P0 | Images saved in `docs/images/` | ✅ |
+| D-02 | Test-case table: ID, scenario, input, expected result, actual result, pass or fail | 1.5 h | after P2 | Covers every P1 and P2 requirement | ✅ |
+| D-03 | Screenshots of each main flow (login, receive stock, bill, alerts, reports) | 0.5 h | after P2 | Saved in `docs/images/` and linked from the README | ✅ |
+| D-04 | Short user manual: how an Admin and a Pharmacist use the system | 1 h | after P2 | One page per role | ✅ |
+| D-05 | Update README status, features and limitations to match what is built | 0.5 h | at the end | No statement in the README is untrue | ✅ |
+| D-06 | Tag release `v1.0` in Git and write release notes | 1 h | at the end | Tag exists; notes list what is included | ✅ |
 
 ## 10. Definition of done
 

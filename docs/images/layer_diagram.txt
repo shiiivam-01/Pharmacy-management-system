@@ -1,0 +1,20 @@
++--------------------------------------------------------------+
+| CLI layer              pms/cli/                              |
+| menus, prompts, tables, printing. NO business rules, NO SQL. |
++------------------------------+-------------------------------+
+                               | calls
++------------------------------v-------------------------------+
+| Service layer          pms/services/                         |
+| business rules, authorization, validation, transactions,     |
+| audit calls. NO print/input, NO raw SQL.                     |
++------------------------------+-------------------------------+
+                               | calls
++------------------------------v-------------------------------+
+| Repository layer       pms/repositories/                     |
+| parameterised SQL only, rows to dataclasses. NO rules.       |
++------------------------------+-------------------------------+
+                               | uses
++------------------------------v-------------------------------+
+| Database               pms/database.py, pms/schema.sql       |
+| connection, PRAGMAs, schema, transaction()                   |
++--------------------------------------------------------------+

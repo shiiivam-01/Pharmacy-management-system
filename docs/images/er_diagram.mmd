@@ -1,0 +1,70 @@
+erDiagram
+    EMPLOYEES ||--o{ SALES : "creates"
+    EMPLOYEES ||--o{ BATCHES : "receives"
+    EMPLOYEES ||--o{ STOCK_ADJUSTMENTS : "performs"
+    EMPLOYEES ||--o{ AUDIT_LOG : "performs"
+    SUPPLIERS ||--o{ MEDICINES : "preferred for"
+    SUPPLIERS ||--o{ BATCHES : "delivers"
+    MEDICINES ||--o{ BATCHES : "has"
+    MEDICINES ||--o{ SALE_ITEMS : "sold as"
+    BATCHES ||--o{ SALE_ITEMS : "taken from"
+    BATCHES ||--o{ STOCK_ADJUSTMENTS : "adjusted by"
+    SALES ||--|{ SALE_ITEMS : "contains"
+
+    EMPLOYEES {
+        int id PK
+        text full_name
+        text role
+        text username UK
+        text password_hash
+        int is_active
+    }
+    SUPPLIERS {
+        int id PK
+        text name UK
+        int is_active
+    }
+    MEDICINES {
+        int id PK
+        text name
+        text form
+        text strength
+        int unit_price_minor
+        real tax_percent
+        int reorder_level
+        int supplier_id FK
+    }
+    BATCHES {
+        int id PK
+        int medicine_id FK
+        text batch_no
+        int quantity
+        text expiry_date
+        int purchase_price_minor
+    }
+    SALES {
+        int id PK
+        text bill_no UK
+        int employee_id FK
+        int total_minor
+        text status
+    }
+    SALE_ITEMS {
+        int id PK
+        int sale_id FK
+        int medicine_id FK
+        int batch_id FK
+        int quantity
+        int line_total_minor
+    }
+    STOCK_ADJUSTMENTS {
+        int id PK
+        int batch_id FK
+        int delta
+        text reason
+    }
+    AUDIT_LOG {
+        int id PK
+        int employee_id FK
+        text action
+    }
