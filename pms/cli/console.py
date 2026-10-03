@@ -75,9 +75,11 @@ def confirm(prompt: str) -> bool:
             return False
 
 def print_table(headers: List[str], rows: List[List[Any]]):
-    """Prints a simple aligned table."""
+    """Prints a simple aligned table with pagination."""
     if not headers and not rows:
         return
+        
+    from pms.config import PAGE_SIZE
     
     # Calculate column widths
     widths = [len(h) for h in headers]
@@ -85,12 +87,43 @@ def print_table(headers: List[str], rows: List[List[Any]]):
         for i, cell in enumerate(row):
             if i < len(widths):
                 widths[i] = max(widths[i], len(str(cell)))
-            
-    # Print headers
-    header_line = " | ".join(str(h).ljust(w) for h, w in zip(headers, widths))
-    print(header_line)
-    print("-" * len(header_line))
+                
+    def print_page(page_rows):
+        header_line = " | ".join(str(h).ljust(w) for h, w in zip(headers, widths))
+        print(header_line)
+        print("-" * len(header_line))
+        for row in page_rows:
+            print(" | ".join(str(cell).ljust(w) for cell, w in zip(row, widths)))
+
+    total_rows = len(rows)
+    if total_rows <= PAGE_SIZE:
+        print_page(rows)
+        return
+        
+    current_page = 0
+    total_pages = (total_rows + PAGE_SIZE - 1) // PAGE_SIZE
     
-    # Print rows
-    for row in rows:
-        print(" | ".join(str(cell).ljust(w) for cell, w in zip(row, widths)))
+    while True:
+        start_idx = current_page * PAGE_SIZE
+        end_idx = min(start_idx + PAGE_SIZE, total_rows)
+        page_rows = rows[start_idx:end_idx]
+        
+        print_page(page_rows)
+        print(f"\nPage {current_page + 1} of {total_pages} ({total_rows} total rows)")
+        
+        options = []
+        if current_page > 0:
+            options.append("P = Previous")
+        if current_page < total_pages - 1:
+            options.append("N = Next")
+        options.append("Q = Quit")
+        
+        prompt = " / ".join(options) + " : "
+        choice = input(prompt).strip().upper()
+        
+        if choice == 'Q':
+            break
+        elif choice == 'P' and current_page > 0:
+            current_page -= 1
+        elif choice == 'N' and current_page < total_pages - 1:
+            current_page += 1

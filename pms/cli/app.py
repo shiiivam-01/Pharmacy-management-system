@@ -56,6 +56,7 @@ def role_menu(conn, session: Session):
         if session.role == "ADMIN":
             print("5. Employees")
             print("6. Audit Log")
+        print("7. Reports")
         print("9. Change Password")
         print("0. Logout")
         
@@ -76,6 +77,9 @@ def role_menu(conn, session: Session):
         elif choice == "6" and session.role == "ADMIN":
             from pms.cli import audit_menu
             audit_menu.show_menu(conn, session)
+        elif choice == "7":
+            from pms.cli import report_menu
+            report_menu.show_menu(conn, session)
         elif choice == "9":
             _change_password_flow(conn, session)
         else:

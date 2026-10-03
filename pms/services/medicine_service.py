@@ -36,20 +36,20 @@ class MedicineService:
         val = cursor.fetchone()[0]
         return val if val else 0
 
-    def list_medicines(self, actor: Session, active_only: bool = False, today: date = None) -> List[Medicine]:
+    def list_medicines(self, actor: Session, active_only: bool = False, category: Optional[str] = None, supplier_id: Optional[int] = None, today: date = None) -> List[Medicine]:
         require(actor, "medicine.view")
-        meds = self.repo.list_all(active_only)
+        meds = self.repo.list_all(active_only, category, supplier_id)
         for m in meds:
             m.available_stock = self._calculate_available_stock(m.id, today)
         return meds
 
-    def search_medicines(self, actor: Session, query: str, active_only: bool = False, today: date = None) -> List[Medicine]:
+    def search_medicines(self, actor: Session, query: str, active_only: bool = False, category: Optional[str] = None, supplier_id: Optional[int] = None, today: date = None) -> List[Medicine]:
         require(actor, "medicine.view")
         query = query.strip()
         if not query:
-            return self.list_medicines(actor, active_only, today)
+            return self.list_medicines(actor, active_only, category, supplier_id, today)
             
-        meds = self.repo.search(query, active_only)
+        meds = self.repo.search(query, active_only, category, supplier_id)
         for m in meds:
             m.available_stock = self._calculate_available_stock(m.id, today)
         return meds
@@ -130,3 +130,9 @@ class MedicineService:
         self.get_medicine(actor, medicine_id)
         self.repo.set_active(medicine_id, 0)
         self._write_audit(actor, "DEACTIVATE_MEDICINE", medicine_id)
+
+    def reactivate_medicine(self, actor: Session, medicine_id: int) -> None:
+        require(actor, "medicine.deactivate") # Re-using this permission for reactivation as well, typical for Admin
+        self.get_medicine(actor, medicine_id)
+        self.repo.set_active(medicine_id, 1)
+        self._write_audit(actor, "REACTIVATE_MEDICINE", medicine_id)

@@ -109,6 +109,10 @@ class BillingService:
         if today is None:
             today = date.today()
             
+        from pms.config import MAX_PHARMACIST_DISCOUNT_PCT
+        if actor.role == "PHARMACIST" and discount_percent > MAX_PHARMACIST_DISCOUNT_PCT:
+            raise ValidationError(f"Pharmacist discount cannot exceed {MAX_PHARMACIST_DISCOUNT_PCT}%.")
+            
         # Re-check stock and allocate FEFO per line
         allocations = []
         for item in cart:

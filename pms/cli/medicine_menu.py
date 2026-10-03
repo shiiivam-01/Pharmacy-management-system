@@ -21,6 +21,7 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
             print("3. View medicine details")
             print("4. Update medicine")
             print("5. Deactivate medicine")
+            print("6. Reactivate medicine")
         else:
             print("1. List/Search medicines")
             print("2. View medicine details")
@@ -42,6 +43,8 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
                 _update_medicine(conn, service, actor)
             elif choice == "5" and actor.role == "ADMIN":
                 _deactivate_medicine(conn, service, actor)
+            elif choice == "6" and actor.role == "ADMIN":
+                _reactivate_medicine(conn, service, actor)
             else:
                 print("Invalid choice.")
         except PMSError as e:
@@ -75,9 +78,16 @@ def _add_medicine(conn: sqlite3.Connection, service: MedicineService, actor: Ses
 def _list_search_medicines(service: MedicineService, actor: Session):
     print("\n[List/Search Medicines]")
     query = console.ask_text("Enter search query (leave blank for all)", required=False)
+    
+    category = console.ask_text("Filter by Category (leave blank for any)", required=False)
+    sup_id_str = console.ask_text("Filter by Supplier ID (leave blank for any)", required=False)
+    supplier_id = int(sup_id_str) if sup_id_str.isdigit() else None
+    
     active_only = actor.role != "ADMIN"
     
-    meds = service.search_medicines(actor, query, active_only)
+    meds = service.search_medicines(
+        actor, query, active_only=active_only, category=category, supplier_id=supplier_id
+    )
     if not meds:
         print("No medicines found.")
         return
@@ -163,3 +173,17 @@ def _deactivate_medicine(conn: sqlite3.Connection, service: MedicineService, act
         with transaction(conn):
             service.deactivate_medicine(actor, med_id)
         print("Medicine deactivated.")
+
+def _reactivate_medicine(conn: sqlite3.Connection, service: MedicineService, actor: Session):
+    print("\n[Reactivate Medicine]")
+    med_id = console.ask_int("Enter Medicine ID", required=True)
+    med = service.get_medicine(actor, med_id)
+    
+    if med.is_active:
+        print("Medicine is already active.")
+        return
+        
+    if console.confirm(f"Are you sure you want to reactivate '{med.name}'?"):
+        with transaction(conn):
+            service.reactivate_medicine(actor, med_id)
+        print("Medicine reactivated.")

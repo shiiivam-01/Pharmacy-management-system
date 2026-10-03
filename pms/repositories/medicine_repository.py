@@ -35,23 +35,41 @@ class MedicineRepository:
         row = cursor.fetchone()
         return self.row_to_model(row) if row else None
 
-    def search(self, query: str, active_only: bool = False) -> List[Medicine]:
+    def search(self, query: str, active_only: bool = False, category: Optional[str] = None, supplier_id: Optional[int] = None) -> List[Medicine]:
         sql = "SELECT * FROM medicines WHERE (name LIKE ? OR generic_name LIKE ?)"
+        like_query = f"%{query}%"
+        params = [like_query, like_query]
+        
         if active_only:
             sql += " AND is_active = 1"
+        if category:
+            sql += " AND category = ?"
+            params.append(category)
+        if supplier_id is not None:
+            sql += " AND supplier_id = ?"
+            params.append(supplier_id)
+            
         sql += " ORDER BY name COLLATE NOCASE, form, strength"
         
-        like_query = f"%{query}%"
-        cursor = self.conn.execute(sql, (like_query, like_query))
+        cursor = self.conn.execute(sql, tuple(params))
         return [self.row_to_model(row) for row in cursor.fetchall()]
 
-    def list_all(self, active_only: bool = False) -> List[Medicine]:
-        sql = "SELECT * FROM medicines"
+    def list_all(self, active_only: bool = False, category: Optional[str] = None, supplier_id: Optional[int] = None) -> List[Medicine]:
+        sql = "SELECT * FROM medicines WHERE 1=1"
+        params = []
+        
         if active_only:
-            sql += " WHERE is_active = 1"
+            sql += " AND is_active = 1"
+        if category:
+            sql += " AND category = ?"
+            params.append(category)
+        if supplier_id is not None:
+            sql += " AND supplier_id = ?"
+            params.append(supplier_id)
+            
         sql += " ORDER BY name COLLATE NOCASE, form, strength"
         
-        cursor = self.conn.execute(sql)
+        cursor = self.conn.execute(sql, tuple(params))
         return [self.row_to_model(row) for row in cursor.fetchall()]
 
     def update(self, medicine_id: int, name: str, generic_name: Optional[str], form: str,

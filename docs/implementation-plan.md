@@ -108,10 +108,10 @@ Update the **Status** column as you work: `☐` not started, `🔄` in progress,
 | T-203 | Change own password and logout | 0.5 h | T-202 | FR-AUTH-04 | Needs current password; new password rules enforced | ✅ |
 | T-204 | Stock adjustment and expired write-off (Admin) | 2 h | T-109 | FR-INV-04, 05 | Reason mandatory; cannot go below 0; adjustment rows recorded; write-off zeroes the batch | ✅ |
 | T-205 | Sales history, filter by date or bill number, reprint | 1.5 h | T-109 | FR-BILL-08 | Pharmacist sees only own sales; Admin sees all; reprint identical to original | ✅ |
-| T-206 | Discounts with the pharmacist cap | 1 h | T-109 | FR-BILL-07 | Pharmacist above cap is rejected; Admin can go to 100 percent; totals still correct | ☐ |
-| T-207 | Reports: daily sales summary, stock valuation, low-stock list, expiry report | 3 h | T-201 | FR-RPT-01 to 03 | Figures match hand calculation on test data; voided sales excluded; pharmacist sees own daily sales only | ☐ |
-| T-208 | Filters by category and supplier; reactivate medicine | 1 h | T-102 | FR-MED-06 | Filters combine with search; reactivated medicine sellable | ☐ |
-| T-209 | Pagination in long lists | 0.5 h | T-102 | NFR-01 | Lists show `PAGE_SIZE` rows with next and previous | ☐ |
+| T-206 | Discounts with the pharmacist cap | 1 h | T-109 | FR-BILL-07 | Pharmacist above cap is rejected; Admin can go to 100 percent; totals still correct | ✅ |
+| T-207 | Reports: daily sales summary, stock valuation, low-stock list, expiry report | 3 h | T-201 | FR-RPT-01 to 03 | Figures match hand calculation on test data; voided sales excluded; pharmacist sees own daily sales only | ✅ |
+| T-208 | Filters by category and supplier; reactivate medicine | 1 h | T-102 | FR-MED-06 | Filters combine with search; reactivated medicine sellable | ✅ |
+| T-209 | Pagination in long lists | 0.5 h | T-102 | NFR-01 | Lists show `PAGE_SIZE` rows with next and previous | ✅ |
 
 **Milestone check (M2 v1.0):** log in as a Pharmacist and as an Admin and walk through every menu from the README. Nothing should crash, and every Admin-only item should be missing or refused for the Pharmacist.
 

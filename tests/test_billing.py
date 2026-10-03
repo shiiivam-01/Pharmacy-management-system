@@ -143,3 +143,21 @@ def test_sales_history(db, admin, pharmacist, today, test_data):
     # Pharmacist shouldn't be able to view admin's bill
     with pytest.raises(ValidationError, match="do not have permission"):
         billing.get_sale_details(pharmacist, s1.bill_no)
+
+def test_pharmacist_discount_cap(db, admin, pharmacist, today, test_data):
+    med1, _ = test_data
+    billing = BillingService(db)
+    
+    cart = billing.add_to_cart(pharmacist, [], med1.id, 1, today)
+    
+    # 10% is allowed
+    sale1 = billing.create_sale(pharmacist, cart, discount_percent=10.0, today=today)
+    assert sale1.discount_percent == 10.0
+    
+    # 11% is rejected
+    with pytest.raises(ValidationError, match="cannot exceed 10%"):
+        billing.create_sale(pharmacist, cart, discount_percent=11.0, today=today)
+        
+    # Admin can do 100%
+    sale2 = billing.create_sale(admin, cart, discount_percent=100.0, today=today)
+    assert sale2.discount_percent == 100.0
