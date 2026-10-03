@@ -16,6 +16,15 @@ class EmployeeRepository:
         cursor = self.conn.execute("SELECT COUNT(*) FROM employees")
         return cursor.fetchone()[0]
 
+    def count_active_admins(self) -> int:
+        cursor = self.conn.execute("SELECT COUNT(*) FROM employees WHERE role = 'ADMIN' AND is_active = 1")
+        return cursor.fetchone()[0]
+
+    def get(self, employee_id: int) -> Optional[Employee]:
+        cursor = self.conn.execute("SELECT * FROM employees WHERE id = ?", (employee_id,))
+        row = cursor.fetchone()
+        return self.row_to_model(row) if row else None
+
     def add(self, full_name: str, phone: Optional[str], role: str, username: str, password_hash: str) -> int:
         cursor = self.conn.execute(
             """

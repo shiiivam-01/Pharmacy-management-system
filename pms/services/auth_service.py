@@ -46,3 +46,22 @@ class AuthService:
             role=user.role,
             full_name=user.full_name
         )
+
+    def change_password(self, actor: Session, current_password: str, new_password: str):
+        user = self.repo.get(actor.employee_id)
+        if not user:
+            raise ValidationError("User not found.")
+            
+        if not verify_password(current_password, user.password_hash):
+            raise ValidationError("Current password is incorrect.")
+            
+        if len(new_password) < 8:
+            raise ValidationError("New password must be at least 8 characters long.")
+            
+        if verify_password(new_password, user.password_hash):
+            raise ValidationError("New password must be different from the old one.")
+            
+        password_hash = hash_password(new_password)
+        self.conn.execute("UPDATE employees SET password_hash = ? WHERE id = ?", (password_hash, actor.employee_id))
+        self.conn.execute("INSERT INTO audit_log (employee_id, action, entity, entity_id) VALUES (?, ?, ?, ?)",
+                          (actor.employee_id, "CHANGE_PASSWORD", "Employee", actor.employee_id))

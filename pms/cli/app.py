@@ -54,7 +54,9 @@ def role_menu(conn, session: Session):
         print("3. Inventory")
         print("4. Billing")
         if session.role == "ADMIN":
-            print("5. Audit Log")
+            print("5. Employees")
+            print("6. Audit Log")
+        print("9. Change Password")
         print("0. Logout")
         
         choice = console.ask_text("Enter choice", required=True)
@@ -69,10 +71,27 @@ def role_menu(conn, session: Session):
         elif choice == "4":
             billing_menu.show_menu(conn, session)
         elif choice == "5" and session.role == "ADMIN":
+            from pms.cli import employee_menu
+            employee_menu.show_menu(conn, session)
+        elif choice == "6" and session.role == "ADMIN":
             from pms.cli import audit_menu
             audit_menu.show_menu(conn, session)
+        elif choice == "9":
+            _change_password_flow(conn, session)
         else:
             print("Invalid choice.")
+
+def _change_password_flow(conn: sqlite3.Connection, session: Session):
+    print("\n[Change Password]")
+    current = console.ask_text("Current Password", required=True)
+    new = console.ask_text("New Password", required=True)
+    try:
+        with transaction(conn):
+            auth = AuthService(conn)
+            auth.change_password(session, current, new)
+        print("Success! Password changed.")
+    except PMSError as e:
+        print(f"Failed: {e}")
 
 def run():
     logger.info("Application starting.")

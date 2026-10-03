@@ -8,7 +8,7 @@ from pms.exceptions import PMSError
 from pms.security import require
 
 def show_menu(conn: sqlite3.Connection, actor: Session):
-    require(actor, "admin.only") # Since this is admin only
+    require(actor, "audit.view") # Since this is admin only
     
     while True:
         print("\n--- Audit Log ---")
