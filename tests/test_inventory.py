@@ -1,9 +1,9 @@
 import pytest
 from datetime import date
 from decimal import Decimal
-from pms.services.inventory_service import InventoryService
-from pms.services.medicine_service import MedicineService
-from pms.exceptions import ValidationError, DuplicateError, AuthorizationError
+from backend.services.inventory_service import InventoryService
+from backend.services.medicine_service import MedicineService
+from backend.exceptions import ValidationError, DuplicateError, AuthorizationError
 
 @pytest.fixture
 def medicine(db, admin):

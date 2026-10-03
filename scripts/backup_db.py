@@ -11,7 +11,7 @@ from pathlib import Path
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from pms.config import DB_PATH
+from backend.config import DB_PATH
 
 def main():
     if not os.path.exists(DB_PATH):

@@ -3,11 +3,11 @@ Supplier service.
 """
 import sqlite3
 from typing import List, Optional
-from pms.models import Supplier, Session
-from pms.repositories.supplier_repository import SupplierRepository
-from pms.security import require
-from pms.exceptions import NotFoundError, DuplicateError
-import pms.validators as v
+from backend.models import Supplier, Session
+from backend.repositories.supplier_repository import SupplierRepository
+from backend.security import require
+from backend.exceptions import NotFoundError, DuplicateError
+import backend.validators as v
 
 class SupplierService:
     def __init__(self, conn: sqlite3.Connection):

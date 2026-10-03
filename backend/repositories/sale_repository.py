@@ -3,7 +3,7 @@ Sale repository.
 """
 import sqlite3
 from typing import List, Optional
-from pms.models import Sale, SaleItem
+from backend.models import Sale, SaleItem
 
 class SaleRepository:
     def __init__(self, conn: sqlite3.Connection):

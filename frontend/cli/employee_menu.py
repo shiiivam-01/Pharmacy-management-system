@@ -1,9 +1,9 @@
 import sqlite3
-from pms.cli import console
-from pms.models import Session
-from pms.services.employee_service import EmployeeService
-from pms.exceptions import PMSError
-from pms.database import transaction
+from frontend.cli import console
+from backend.models import Session
+from backend.services.employee_service import EmployeeService
+from backend.exceptions import PMSError
+from backend.database import transaction
 
 def show_menu(conn: sqlite3.Connection, actor: Session):
     emp_service = EmployeeService(conn)

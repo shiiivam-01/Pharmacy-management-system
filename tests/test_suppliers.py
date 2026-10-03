@@ -1,6 +1,6 @@
 import pytest
-from pms.services.supplier_service import SupplierService
-from pms.exceptions import DuplicateError, NotFoundError, AuthorizationError
+from backend.services.supplier_service import SupplierService
+from backend.exceptions import DuplicateError, NotFoundError, AuthorizationError
 
 def test_add_supplier(db, admin):
     service = SupplierService(db)

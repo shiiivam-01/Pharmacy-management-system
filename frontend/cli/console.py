@@ -4,8 +4,8 @@ Console UI helpers for the Pharmacy Management System.
 from datetime import date
 from decimal import Decimal
 from typing import List, Any
-import pms.validators as validators
-from pms.exceptions import ValidationError
+import backend.validators as validators
+from backend.exceptions import ValidationError
 
 def ask_text(prompt: str, required: bool = True) -> str:
     while True:
@@ -79,7 +79,7 @@ def print_table(headers: List[str], rows: List[List[Any]]):
     if not headers and not rows:
         return
         
-    from pms.config import PAGE_SIZE
+    from backend.config import PAGE_SIZE
     
     # Calculate column widths
     widths = [len(h) for h in headers]

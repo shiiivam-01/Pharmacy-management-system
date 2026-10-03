@@ -1,10 +1,10 @@
-from pms.cli import console, supplier_menu, medicine_menu, inventory_menu, billing_menu
-from pms.logger import get_logger
-from pms.database import connect, transaction
-from pms.services.auth_service import AuthService
-from pms.services.alert_service import AlertService
-from pms.models import Session
-from pms.exceptions import PMSError
+from frontend.cli import console, supplier_menu, medicine_menu, inventory_menu, billing_menu
+from backend.logger import get_logger
+from backend.database import connect, transaction
+from backend.services.auth_service import AuthService
+from backend.services.alert_service import AlertService
+from backend.models import Session
+from backend.exceptions import PMSError
 
 logger = get_logger(__name__)
 
@@ -72,13 +72,13 @@ def role_menu(conn, session: Session):
         elif choice == "4":
             billing_menu.show_menu(conn, session)
         elif choice == "5" and session.role == "ADMIN":
-            from pms.cli import employee_menu
+            from frontend.cli import employee_menu
             employee_menu.show_menu(conn, session)
         elif choice == "6" and session.role == "ADMIN":
-            from pms.cli import audit_menu
+            from frontend.cli import audit_menu
             audit_menu.show_menu(conn, session)
         elif choice == "7":
-            from pms.cli import report_menu
+            from frontend.cli import report_menu
             report_menu.show_menu(conn, session)
         elif choice == "9":
             _change_password_flow(conn, session)
@@ -100,7 +100,7 @@ def _change_password_flow(conn: sqlite3.Connection, session: Session):
 def run():
     logger.info("Application starting.")
     try:
-        from pms.database import init_schema
+        from backend.database import init_schema
         conn = connect()
         init_schema(conn)
         auth = AuthService(conn)

@@ -1,10 +1,10 @@
 import pytest
 from datetime import date
 from decimal import Decimal
-from pms.services.medicine_service import MedicineService
-from pms.services.inventory_service import InventoryService
-from pms.services.billing_service import BillingService
-from pms.exceptions import AuthorizationError
+from backend.services.medicine_service import MedicineService
+from backend.services.inventory_service import InventoryService
+from backend.services.billing_service import BillingService
+from backend.exceptions import AuthorizationError
 
 def test_integration_flow(db, admin, pharmacist, today):
     med_service = MedicineService(db)

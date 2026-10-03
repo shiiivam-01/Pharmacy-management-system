@@ -1,6 +1,6 @@
 import pytest
-from pms.security import hash_password, verify_password, require, PERMISSIONS
-from pms.exceptions import AuthorizationError
+from backend.security import hash_password, verify_password, require, PERMISSIONS
+from backend.exceptions import AuthorizationError
 
 class DummySession:
     def __init__(self, role):

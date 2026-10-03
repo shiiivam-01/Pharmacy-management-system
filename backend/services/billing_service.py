@@ -4,15 +4,15 @@ Billing service.
 import sqlite3
 from typing import List, Dict, Any, Optional
 from datetime import date
-from pms.models import Session, CartLine, Sale
-from pms.repositories.medicine_repository import MedicineRepository
-from pms.repositories.batch_repository import BatchRepository
-from pms.repositories.sale_repository import SaleRepository
-from pms.services.medicine_service import MedicineService
-from pms.services.fefo import allocate_fefo
-from pms.exceptions import ValidationError, InsufficientStockError
-from pms.security import require
-from pms.money import round_half_up
+from backend.models import Session, CartLine, Sale
+from backend.repositories.medicine_repository import MedicineRepository
+from backend.repositories.batch_repository import BatchRepository
+from backend.repositories.sale_repository import SaleRepository
+from backend.services.medicine_service import MedicineService
+from backend.services.fefo import allocate_fefo
+from backend.exceptions import ValidationError, InsufficientStockError
+from backend.security import require
+from backend.money import round_half_up
 
 class BillingService:
     def __init__(self, conn: sqlite3.Connection):
@@ -109,7 +109,7 @@ class BillingService:
         if today is None:
             today = date.today()
             
-        from pms.config import MAX_PHARMACIST_DISCOUNT_PCT
+        from backend.config import MAX_PHARMACIST_DISCOUNT_PCT
         if actor.role == "PHARMACIST" and discount_percent > MAX_PHARMACIST_DISCOUNT_PCT:
             raise ValidationError(f"Pharmacist discount cannot exceed {MAX_PHARMACIST_DISCOUNT_PCT}%.")
             

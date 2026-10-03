@@ -4,8 +4,8 @@ Reporting service for the Pharmacy Management System.
 import sqlite3
 from typing import Dict, List, Any
 from datetime import date
-from pms.models import Session
-from pms.security import require
+from backend.models import Session
+from backend.security import require
 
 class ReportService:
     def __init__(self, conn: sqlite3.Connection):

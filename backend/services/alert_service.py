@@ -4,8 +4,8 @@ Alert service for dashboard notifications.
 import sqlite3
 from typing import List, Dict, Any
 from datetime import date
-from pms.models import Session
-from pms.config import EXPIRY_WARNING_DAYS
+from backend.models import Session
+from backend.config import EXPIRY_WARNING_DAYS
 
 class AlertService:
     def __init__(self, conn: sqlite3.Connection):

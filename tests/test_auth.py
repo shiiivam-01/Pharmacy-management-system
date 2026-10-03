@@ -1,7 +1,7 @@
 import pytest
-from pms.services.auth_service import AuthService
-from pms.exceptions import AuthenticationError, PMSError, ValidationError
-from pms.models import Session
+from backend.services.auth_service import AuthService
+from backend.exceptions import AuthenticationError, PMSError, ValidationError
+from backend.models import Session
 
 def test_bootstrap_and_login(db):
     db.execute("DELETE FROM employees")
@@ -38,7 +38,7 @@ def test_change_password(db, admin):
     service = AuthService(db)
     
     # We need a user with a valid password hash, because the fixture has dummy_hash
-    from pms.security import hash_password
+    from backend.security import hash_password
     pw_hash = hash_password("oldpassword")
     db.execute("INSERT INTO employees (full_name, role, username, password_hash) VALUES ('Real', 'ADMIN', 'real_admin', ?)", (pw_hash,))
     real_admin_id = db.execute("SELECT last_insert_rowid()").fetchone()[0]
@@ -70,8 +70,8 @@ def test_change_password(db, admin):
 
 def test_login_lockout(db):
     from datetime import datetime, timedelta
-    from pms.config import LOCKOUT_ATTEMPTS, LOCKOUT_MINUTES
-    from pms.security import hash_password
+    from backend.config import LOCKOUT_ATTEMPTS, LOCKOUT_MINUTES
+    from backend.security import hash_password
     
     db.execute("DELETE FROM employees")
     db.commit()

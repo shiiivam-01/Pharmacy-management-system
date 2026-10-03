@@ -4,7 +4,7 @@ Batch repository.
 import sqlite3
 from typing import List, Optional
 from datetime import date
-from pms.models import Batch
+from backend.models import Batch
 
 class BatchRepository:
     def __init__(self, conn: sqlite3.Connection):

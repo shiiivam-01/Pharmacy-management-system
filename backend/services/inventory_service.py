@@ -5,13 +5,13 @@ import sqlite3
 from datetime import date
 from decimal import Decimal
 from typing import List
-from pms.models import Batch, Session
-from pms.repositories.batch_repository import BatchRepository
-from pms.repositories.medicine_repository import MedicineRepository
-from pms.security import require
-from pms.exceptions import ValidationError, DuplicateError, NotFoundError
-from pms.money import to_minor
-import pms.validators as v
+from backend.models import Batch, Session
+from backend.repositories.batch_repository import BatchRepository
+from backend.repositories.medicine_repository import MedicineRepository
+from backend.security import require
+from backend.exceptions import ValidationError, DuplicateError, NotFoundError
+from backend.money import to_minor
+import backend.validators as v
 
 class InventoryService:
     def __init__(self, conn: sqlite3.Connection):

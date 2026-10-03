@@ -1,6 +1,6 @@
 import pytest
-from pms.services.employee_service import EmployeeService
-from pms.exceptions import ValidationError, AuthorizationError
+from backend.services.employee_service import EmployeeService
+from backend.exceptions import ValidationError, AuthorizationError
 
 def test_employee_service_add_list_update(db, admin, pharmacist):
     service = EmployeeService(db)

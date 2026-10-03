@@ -1,10 +1,10 @@
 import pytest
 from datetime import date
 from decimal import Decimal
-from pms.services.report_service import ReportService
-from pms.services.medicine_service import MedicineService
-from pms.services.inventory_service import InventoryService
-from pms.services.billing_service import BillingService
+from backend.services.report_service import ReportService
+from backend.services.medicine_service import MedicineService
+from backend.services.inventory_service import InventoryService
+from backend.services.billing_service import BillingService
 
 @pytest.fixture
 def test_data(db, admin, pharmacist, today):

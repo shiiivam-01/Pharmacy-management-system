@@ -3,7 +3,7 @@ Employee repository for database operations.
 """
 import sqlite3
 from typing import Optional
-from pms.models import Employee
+from backend.models import Employee
 
 class EmployeeRepository:
     def __init__(self, conn: sqlite3.Connection):

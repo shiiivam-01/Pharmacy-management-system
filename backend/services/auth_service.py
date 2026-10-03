@@ -2,10 +2,10 @@
 Authentication service.
 """
 import sqlite3
-from pms.models import Session
-from pms.repositories.employee_repository import EmployeeRepository
-from pms.security import hash_password, verify_password
-from pms.exceptions import AuthenticationError, PMSError, ValidationError
+from backend.models import Session
+from backend.repositories.employee_repository import EmployeeRepository
+from backend.security import hash_password, verify_password
+from backend.exceptions import AuthenticationError, PMSError, ValidationError
 
 class AuthService:
     def __init__(self, conn: sqlite3.Connection):
@@ -48,7 +48,7 @@ class AuthService:
                 pass
             
         if not verify_password(password, user.password_hash):
-            from pms.config import LOCKOUT_ATTEMPTS, LOCKOUT_MINUTES
+            from backend.config import LOCKOUT_ATTEMPTS, LOCKOUT_MINUTES
             from datetime import timedelta
             
             new_attempts = user.failed_attempts + 1

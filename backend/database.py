@@ -1,7 +1,7 @@
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
-from pms import config
+from backend import config
 
 def connect(db_path: str = None) -> sqlite3.Connection:
     """Creates a connection to the SQLite database with enforced settings."""

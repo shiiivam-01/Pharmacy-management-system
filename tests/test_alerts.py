@@ -1,10 +1,10 @@
 import pytest
 from datetime import date, timedelta
 from decimal import Decimal
-from pms.services.medicine_service import MedicineService
-from pms.services.inventory_service import InventoryService
-from pms.services.alert_service import AlertService
-from pms.config import EXPIRY_WARNING_DAYS
+from backend.services.medicine_service import MedicineService
+from backend.services.inventory_service import InventoryService
+from backend.services.alert_service import AlertService
+from backend.config import EXPIRY_WARNING_DAYS
 
 def test_alerts(db, admin, today):
     med_service = MedicineService(db)

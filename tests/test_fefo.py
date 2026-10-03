@@ -1,8 +1,8 @@
 import pytest
 from datetime import date
-from pms.models import Batch
-from pms.services.fefo import allocate_fefo
-from pms.exceptions import InsufficientStockError
+from backend.models import Batch
+from backend.services.fefo import allocate_fefo
+from backend.exceptions import InsufficientStockError
 
 @pytest.fixture
 def today():

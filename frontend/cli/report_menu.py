@@ -2,11 +2,11 @@
 Reports menu for the CLI.
 """
 import sqlite3
-from pms.cli import console
-from pms.models import Session
-from pms.services.report_service import ReportService
-from pms.money import to_decimal
-from pms.exceptions import PMSError
+from frontend.cli import console
+from backend.models import Session
+from backend.services.report_service import ReportService
+from backend.money import to_decimal
+from backend.exceptions import PMSError
 import csv
 import os
 
@@ -115,7 +115,7 @@ def _low_stock(report_service: ReportService, actor: Session):
 
 def _expiry_report(report_service: ReportService, actor: Session):
     print("\n[Expiry Report]")
-    from pms.config import EXPIRY_WARNING_DAYS
+    from backend.config import EXPIRY_WARNING_DAYS
     days = console.ask_int(f"Days ahead [{EXPIRY_WARNING_DAYS}]", required=False) or EXPIRY_WARNING_DAYS
     
     items = report_service.get_expiry_report(actor, days)

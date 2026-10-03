@@ -4,8 +4,8 @@ Security utilities and permission definitions for the Pharmacy Management System
 import os
 import hashlib
 import hmac
-from pms import config
-from pms.exceptions import AuthorizationError
+from backend import config
+from backend.exceptions import AuthorizationError
 
 PERMISSIONS = {
     "medicine.view":        {"ADMIN", "PHARMACIST"},

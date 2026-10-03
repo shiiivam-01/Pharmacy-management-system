@@ -3,13 +3,13 @@ Medicine service.
 """
 import sqlite3
 from typing import List, Optional
-from pms.models import Medicine, Session
-from pms.repositories.medicine_repository import MedicineRepository
-from pms.security import require
-from pms.exceptions import NotFoundError, DuplicateError, ValidationError
-import pms.validators as v
+from backend.models import Medicine, Session
+from backend.repositories.medicine_repository import MedicineRepository
+from backend.security import require
+from backend.exceptions import NotFoundError, DuplicateError, ValidationError
+import backend.validators as v
 from decimal import Decimal
-from pms.money import to_minor
+from backend.money import to_minor
 
 class MedicineService:
     def __init__(self, conn: sqlite3.Connection):

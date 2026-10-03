@@ -3,11 +3,11 @@ Employee service for managing employees.
 """
 import sqlite3
 from typing import List, Optional
-from pms.models import Session, Employee
-from pms.repositories.employee_repository import EmployeeRepository
-from pms.security import require, hash_password
-from pms.exceptions import ValidationError
-import pms.validators as v
+from backend.models import Session, Employee
+from backend.repositories.employee_repository import EmployeeRepository
+from backend.security import require, hash_password
+from backend.exceptions import ValidationError
+import backend.validators as v
 
 class EmployeeService:
     def __init__(self, conn: sqlite3.Connection):

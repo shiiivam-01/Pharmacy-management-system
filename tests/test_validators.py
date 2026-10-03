@@ -1,6 +1,6 @@
 import pytest
 from datetime import date
-from pms.validators import (
+from backend.validators import (
     validate_non_empty_text,
     validate_positive_int,
     validate_date,
@@ -8,7 +8,7 @@ from pms.validators import (
     validate_email,
     validate_password_strength,
 )
-from pms.exceptions import ValidationError
+from backend.exceptions import ValidationError
 
 def test_validate_non_empty_text():
     assert validate_non_empty_text(" hello ", "Name") == "hello"

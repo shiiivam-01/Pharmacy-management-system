@@ -3,7 +3,7 @@ Supplier repository.
 """
 import sqlite3
 from typing import List, Optional
-from pms.models import Supplier
+from backend.models import Supplier
 
 class SupplierRepository:
     def __init__(self, conn: sqlite3.Connection):

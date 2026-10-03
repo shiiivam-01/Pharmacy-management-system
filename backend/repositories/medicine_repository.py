@@ -3,7 +3,7 @@ Medicine repository.
 """
 import sqlite3
 from typing import List, Optional
-from pms.models import Medicine
+from backend.models import Medicine
 
 class MedicineRepository:
     def __init__(self, conn: sqlite3.Connection):

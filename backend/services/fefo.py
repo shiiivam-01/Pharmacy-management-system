@@ -3,8 +3,8 @@ FEFO (First Expired First Out) stock allocation algorithm.
 """
 from typing import List, Tuple
 from datetime import date
-from pms.models import Batch
-from pms.exceptions import InsufficientStockError
+from backend.models import Batch
+from backend.exceptions import InsufficientStockError
 
 def allocate_fefo(batches: List[Batch], quantity_needed: int, today: date = None) -> List[Tuple[Batch, int]]:
     """

@@ -3,9 +3,9 @@ Pytest configuration and shared fixtures for the Pharmacy Management System.
 """
 import pytest
 from datetime import date
-from pms import config
-from pms.database import connect, init_schema
-from pms.models import Session
+from backend import config
+from backend.database import connect, init_schema
+from backend.models import Session
 
 # Lower PBKDF2 iterations for fast testing
 config.PBKDF2_ITERATIONS = 1000

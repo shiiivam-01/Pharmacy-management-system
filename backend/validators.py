@@ -3,7 +3,7 @@ Input validation functions for the Pharmacy Management System.
 """
 import re
 from datetime import date
-from pms.exceptions import ValidationError
+from backend.exceptions import ValidationError
 
 def validate_non_empty_text(value: str, field_name: str) -> str:
     """Validates that text is not empty and returns stripped version."""

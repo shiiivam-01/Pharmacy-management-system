@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from pms.money import to_minor, to_decimal, round_half_up
+from backend.money import to_minor, to_decimal, round_half_up
 
 def test_to_minor():
     assert to_minor(Decimal('1.25')) == 125

@@ -2,10 +2,10 @@
 Audit log menu for Admin.
 """
 import sqlite3
-from pms.cli import console
-from pms.models import Session
-from pms.exceptions import PMSError
-from pms.security import require
+from frontend.cli import console
+from backend.models import Session
+from backend.exceptions import PMSError
+from backend.security import require
 
 def show_menu(conn: sqlite3.Connection, actor: Session):
     require(actor, "audit.view") # Since this is admin only

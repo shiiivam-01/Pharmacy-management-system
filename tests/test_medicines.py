@@ -1,7 +1,7 @@
 import pytest
 from decimal import Decimal
-from pms.services.medicine_service import MedicineService
-from pms.exceptions import DuplicateError, NotFoundError, AuthorizationError, ValidationError
+from backend.services.medicine_service import MedicineService
+from backend.exceptions import DuplicateError, NotFoundError, AuthorizationError, ValidationError
 
 def test_add_medicine(db, admin):
     service = MedicineService(db)

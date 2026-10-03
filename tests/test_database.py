@@ -1,6 +1,6 @@
 import pytest
 import sqlite3
-from pms.database import connect, init_schema, transaction
+from backend.database import connect, init_schema, transaction
 
 def test_database_connection_and_schema():
     # Use in-memory for testing

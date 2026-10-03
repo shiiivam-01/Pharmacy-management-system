@@ -1,10 +1,10 @@
 import pytest
 from datetime import date
-from pms.models import CartLine
-from pms.services.billing_service import BillingService
-from pms.services.medicine_service import MedicineService
-from pms.services.inventory_service import InventoryService
-from pms.exceptions import ValidationError, InsufficientStockError
+from backend.models import CartLine
+from backend.services.billing_service import BillingService
+from backend.services.medicine_service import MedicineService
+from backend.services.inventory_service import InventoryService
+from backend.exceptions import ValidationError, InsufficientStockError
 from decimal import Decimal
 
 @pytest.fixture

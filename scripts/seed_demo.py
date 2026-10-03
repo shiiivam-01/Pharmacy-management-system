@@ -12,14 +12,14 @@ from pathlib import Path
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from pms.database import connect, init_schema, transaction
-from pms.models import Session
-from pms.security import hash_password
-from pms.repositories.employee_repository import EmployeeRepository
-from pms.repositories.supplier_repository import SupplierRepository
-from pms.services.medicine_service import MedicineService
-from pms.services.inventory_service import InventoryService
-from pms.services.billing_service import BillingService
+from backend.database import connect, init_schema, transaction
+from backend.models import Session
+from backend.security import hash_password
+from backend.repositories.employee_repository import EmployeeRepository
+from backend.repositories.supplier_repository import SupplierRepository
+from backend.services.medicine_service import MedicineService
+from backend.services.inventory_service import InventoryService
+from backend.services.billing_service import BillingService
 
 def main():
     print("Seeding demo data...")

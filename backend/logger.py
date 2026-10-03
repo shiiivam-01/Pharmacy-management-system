@@ -3,7 +3,7 @@ Logging configuration for the Pharmacy Management System.
 """
 import logging
 from logging.handlers import RotatingFileHandler
-from pms import config
+from backend import config
 
 def get_logger(name: str) -> logging.Logger:
     """

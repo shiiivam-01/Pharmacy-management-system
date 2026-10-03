@@ -3,12 +3,12 @@ Medicine menu for the CLI.
 """
 import sqlite3
 from decimal import Decimal
-from pms.cli import console
-from pms.models import Session
-from pms.database import transaction
-from pms.services.medicine_service import MedicineService
-from pms.money import to_decimal
-from pms.exceptions import PMSError
+from frontend.cli import console
+from backend.models import Session
+from backend.database import transaction
+from backend.services.medicine_service import MedicineService
+from backend.money import to_decimal
+from backend.exceptions import PMSError
 
 def show_menu(conn: sqlite3.Connection, actor: Session):
     service = MedicineService(conn)

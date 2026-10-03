@@ -2,11 +2,11 @@
 Supplier menu for the CLI.
 """
 import sqlite3
-from pms.cli import console
-from pms.models import Session
-from pms.database import transaction
-from pms.services.supplier_service import SupplierService
-from pms.exceptions import PMSError
+from frontend.cli import console
+from backend.models import Session
+from backend.database import transaction
+from backend.services.supplier_service import SupplierService
+from backend.exceptions import PMSError
 
 def show_menu(conn: sqlite3.Connection, actor: Session):
     service = SupplierService(conn)
