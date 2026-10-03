@@ -71,7 +71,7 @@ Update the **Status** column as you work: `☐` not started, `🔄` in progress,
 
 | ID | Task | Est. | Depends on | Covers | Done when | Status |
 |---|---|:---:|---|---|---|:---:|
-| T-001 | Create the repository, folder structure from the README, `.gitignore`, `requirements.txt` (pytest), empty package files | 0.5 h | none | | `python main.py` runs without error (prints a placeholder); folders match the README tree; `data/`, `bills/`, `reports/`, `logs/`, `backups/` are ignored by Git | ☐ |
+| T-001 | Create the repository, folder structure from the README, `.gitignore`, `requirements.txt` (pytest), empty package files | 0.5 h | none | | `python main.py` runs without error (prints a placeholder); folders match the README tree; `data/`, `bills/`, `reports/`, `logs/`, `backups/` are ignored by Git | ✅ |
 | T-002 | `config.py` and `logger.py` (rotating file log plus console) | 1 h | T-001 | FR-SYS-01, FR-SYS-02 | Settings are read from one module; a log line appears in `logs/pms.log`; log rotates at 1 MB | ☐ |
 | T-003 | `exceptions.py`, `validators.py`, `money.py` with tests | 1.5 h | T-001 | NFR-06 | Exception hierarchy exists; validators reject bad input with `ValidationError`; money converts both ways with half-up rounding; tests pass | ☐ |
 | T-004 | `schema.sql` and `database.py` (`connect`, `init_schema`, `transaction`) | 2 h | T-002 | FR-SYS-03, NFR-03 | First run creates the database; foreign keys are on; `transaction()` rolls back on error (tested); `user_version` is 1 | ☐ |
