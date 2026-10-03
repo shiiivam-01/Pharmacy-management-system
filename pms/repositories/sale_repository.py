@@ -66,3 +66,20 @@ class SaleRepository:
             """,
             (status, void_reason, voided_by, sale_id)
         )
+
+    def list_sales(self, employee_id: Optional[int] = None, date_str: Optional[str] = None) -> List[Sale]:
+        sql = "SELECT * FROM sales WHERE 1=1"
+        params = []
+        
+        if employee_id is not None:
+            sql += " AND employee_id = ?"
+            params.append(employee_id)
+            
+        if date_str:
+            sql += " AND date(created_at) = ?"
+            params.append(date_str)
+            
+        sql += " ORDER BY created_at DESC"
+        
+        cursor = self.conn.execute(sql, tuple(params))
+        return [Sale(**dict(row)) for row in cursor.fetchall()]

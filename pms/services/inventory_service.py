@@ -72,3 +72,51 @@ class InventoryService:
             b.days_to_expiry = (b_exp - today).days
             
         return batches
+
+    def adjust_stock(self, actor: Session, batch_id: int, new_quantity: int, reason: str, note: str = None) -> Batch:
+        require(actor, "inventory.adjust")
+        batch = self.batch_repo.get(batch_id)
+        if not batch:
+            raise NotFoundError("Batch not found.")
+            
+        new_quantity = v.validate_positive_int(new_quantity, "New Quantity", allow_zero=True)
+        if new_quantity == batch.quantity:
+            raise ValidationError("New quantity is the same as current quantity.")
+            
+        reason = v.validate_choice(reason.upper(), ["DAMAGED", "LOST", "CORRECTION"], "Reason")
+        delta = new_quantity - batch.quantity
+        
+        self.batch_repo.update_quantity(batch_id, new_quantity)
+        
+        self.conn.execute(
+            "INSERT INTO stock_adjustments (batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?)",
+            (batch_id, actor.employee_id, delta, reason, note)
+        )
+        self._write_audit(actor, "ADJUST_STOCK", batch_id, f"Delta: {delta}, Reason: {reason}")
+        return self.batch_repo.get(batch_id)
+
+    def write_off_expired(self, actor: Session, batch_id: int, today: date = None) -> Batch:
+        require(actor, "inventory.adjust")
+        if today is None:
+            today = date.today()
+            
+        batch = self.batch_repo.get(batch_id)
+        if not batch:
+            raise NotFoundError("Batch not found.")
+            
+        exp_date_obj = date.fromisoformat(batch.expiry_date)
+        if exp_date_obj >= today:
+            raise ValidationError("Batch is not expired.")
+            
+        if batch.quantity == 0:
+            raise ValidationError("Batch already has 0 quantity.")
+            
+        delta = -batch.quantity
+        self.batch_repo.update_quantity(batch_id, 0)
+        
+        self.conn.execute(
+            "INSERT INTO stock_adjustments (batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?)",
+            (batch_id, actor.employee_id, delta, "EXPIRED_WRITE_OFF", "System write-off")
+        )
+        self._write_audit(actor, "WRITE_OFF", batch_id, f"Written off {abs(delta)} items")
+        return self.batch_repo.get(batch_id)

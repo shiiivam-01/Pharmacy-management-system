@@ -106,8 +106,8 @@ Update the **Status** column as you work: `☐` not started, `🔄` in progress,
 | T-201 | `AlertService` and login dashboard (low stock, expiring soon, expired with stock) | 2.5 h | T-109 | FR-ALR-01 to 04 | Boundary tests pass: exactly at reorder level, expiring on day N and N+1, expiring today; dashboard shows counts with drill-down | ✅ |
 | T-202 | Employee management: service and menu (add, list, update, deactivate, reset password) | 2 h | T-109 | FR-EMP-01 to 03, BR-16 | Last active Admin and self cannot be deactivated (tested); deactivated user cannot log in | ✅ |
 | T-203 | Change own password and logout | 0.5 h | T-202 | FR-AUTH-04 | Needs current password; new password rules enforced | ✅ |
-| T-204 | Stock adjustment and expired write-off (Admin) | 2 h | T-109 | FR-INV-04, 05 | Reason mandatory; cannot go below 0; adjustment rows recorded; write-off zeroes the batch | ☐ |
-| T-205 | Sales history, filter by date or bill number, reprint | 1.5 h | T-109 | FR-BILL-08 | Pharmacist sees only own sales; Admin sees all; reprint identical to original | ☐ |
+| T-204 | Stock adjustment and expired write-off (Admin) | 2 h | T-109 | FR-INV-04, 05 | Reason mandatory; cannot go below 0; adjustment rows recorded; write-off zeroes the batch | ✅ |
+| T-205 | Sales history, filter by date or bill number, reprint | 1.5 h | T-109 | FR-BILL-08 | Pharmacist sees only own sales; Admin sees all; reprint identical to original | ✅ |
 | T-206 | Discounts with the pharmacist cap | 1 h | T-109 | FR-BILL-07 | Pharmacist above cap is rejected; Admin can go to 100 percent; totals still correct | ☐ |
 | T-207 | Reports: daily sales summary, stock valuation, low-stock list, expiry report | 3 h | T-201 | FR-RPT-01 to 03 | Figures match hand calculation on test data; voided sales excluded; pharmacist sees own daily sales only | ☐ |
 | T-208 | Filters by category and supplier; reactivate medicine | 1 h | T-102 | FR-MED-06 | Filters combine with search; reactivated medicine sellable | ☐ |

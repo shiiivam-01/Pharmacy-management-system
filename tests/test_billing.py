@@ -115,3 +115,31 @@ def test_void_sale(db, admin, today, test_data):
     billing.void_sale(admin, sale.bill_no, "Customer returned")
     
     assert med_service.get_medicine(admin, med1.id, today).available_stock == 100
+
+def test_sales_history(db, admin, pharmacist, today, test_data):
+    med1, _ = test_data
+    billing = BillingService(db)
+    
+    # Create two sales by admin
+    cart1 = billing.add_to_cart(admin, [], med1.id, 1, today)
+    s1 = billing.create_sale(admin, cart1, today=today)
+    
+    cart2 = billing.add_to_cart(admin, [], med1.id, 2, today)
+    s2 = billing.create_sale(admin, cart2, today=today)
+    
+    # Admin should see both
+    history = billing.get_sales_history(admin)
+    assert len(history) == 2
+    
+    # Pharmacist should see none, since admin created them
+    history_pharm = billing.get_sales_history(pharmacist)
+    assert len(history_pharm) == 0
+    
+    # Verify get_sale_details works for admin
+    sale, items = billing.get_sale_details(admin, s1.bill_no)
+    assert sale.id == s1.id
+    assert len(items) == 1
+    
+    # Pharmacist shouldn't be able to view admin's bill
+    with pytest.raises(ValidationError, match="do not have permission"):
+        billing.get_sale_details(pharmacist, s1.bill_no)

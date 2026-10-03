@@ -20,7 +20,7 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
     while True:
         print("\n--- Billing ---")
         print("1. New Sale")
-        print("2. View Past Bill")
+        print("2. Sales History / Reprint Bill")
         if actor.role == "ADMIN":
             print("3. Void Sale")
         print("0. Back to main menu")
@@ -33,7 +33,7 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
             if choice == "1":
                 _new_sale(conn, billing, med_service, actor)
             elif choice == "2":
-                _view_past_bill(billing, actor)
+                _sales_history(billing, actor)
             elif choice == "3" and actor.role == "ADMIN":
                 _void_sale(conn, billing, actor)
             else:
@@ -172,20 +172,44 @@ def _render_and_save_bill(billing: BillingService, sale: Sale, cart: List[CartLi
         f.write(bill_text)
     print(f"Bill saved to {filename}")
 
-def _view_past_bill(billing: BillingService, actor: Session):
-    bill_no = console.ask_text("Enter Bill Number", required=True)
-    sale = billing.sale_repo.get_sale_by_bill_no(bill_no)
-    if not sale:
-        print("Bill not found.")
+def _sales_history(billing: BillingService, actor: Session):
+    print("\n[Sales History]")
+    search = console.ask_text("Enter Bill Number or Date (YYYY-MM-DD) or leave blank for all")
+    
+    if search and search.startswith("PMS-"):
+        try:
+            sale, _ = billing.get_sale_details(actor, search)
+            _render_and_save_bill(billing, sale)
+        except PMSError as e:
+            print(f"Error: {e}")
         return
         
-    # Scope check: Pharmacist can only view their own?
-    # PRD section 6: Pharmacist can read own sales.
-    if actor.role == "PHARMACIST" and sale.employee_id != actor.employee_id:
-        print("You can only view your own bills.")
-        return
+    date_filter = search if search else None
+    if date_filter:
+        try:
+            from datetime import date
+            date.fromisoformat(date_filter)
+        except ValueError:
+            print("Invalid date format. Use YYYY-MM-DD.")
+            return
+
+    try:
+        sales = billing.get_sales_history(actor, date_filter)
+        if not sales:
+            print("No sales found.")
+            return
+            
+        print("\nSales History:")
+        headers = ["ID", "Bill No", "Date", "Status", "Total"]
+        rows = [[s.id, s.bill_no, s.created_at[:10], s.status, to_decimal(s.total_minor)] for s in sales]
+        console.print_table(headers, rows)
         
-    _render_and_save_bill(billing, sale)
+        bill_no = console.ask_text("Enter Bill Number to reprint (or leave blank to go back)")
+        if bill_no:
+            sale, _ = billing.get_sale_details(actor, bill_no)
+            _render_and_save_bill(billing, sale)
+    except PMSError as e:
+        print(f"Error: {e}")
 
 def _void_sale(conn: sqlite3.Connection, billing: BillingService, actor: Session):
     bill_no = console.ask_text("Enter Bill Number to void", required=True)

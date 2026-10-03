@@ -179,3 +179,20 @@ class BillingService:
                 
         self.sale_repo.set_sale_status(sale.id, "VOIDED", reason, actor.employee_id)
         self._write_audit(actor, "VOID_SALE", sale.id, f"Bill No: {bill_no}, Reason: {reason}")
+
+    def get_sales_history(self, actor: Session, date_filter: Optional[str] = None) -> List[Sale]:
+        require(actor, "medicine.view")
+        employee_id = None if actor.role == "ADMIN" else actor.employee_id
+        return self.sale_repo.list_sales(employee_id=employee_id, date_str=date_filter)
+
+    def get_sale_details(self, actor: Session, bill_no: str) -> Tuple[Sale, List[SaleItem]]:
+        require(actor, "medicine.view")
+        sale = self.sale_repo.get_sale_by_bill_no(bill_no)
+        if not sale:
+            raise ValidationError(f"Bill '{bill_no}' not found.")
+            
+        if actor.role != "ADMIN" and sale.employee_id != actor.employee_id:
+            raise ValidationError(f"You do not have permission to view bill '{bill_no}'.")
+            
+        items = self.sale_repo.get_sale_items(sale.id)
+        return sale, items

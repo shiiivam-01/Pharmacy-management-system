@@ -76,3 +76,48 @@ def test_list_batches_and_stock_exclusion(db, admin, medicine, today):
     
     future_med = med_service.get_medicine(admin, medicine.id, today=future_date)
     assert future_med.available_stock == 0
+
+def test_adjust_stock(db, admin, pharmacist, medicine, today):
+    inv_service = InventoryService(db)
+    batch = inv_service.receive_stock(
+        admin, medicine.id, batch_no="B001", quantity=100,
+        purchase_price=Decimal("0.50"), expiry_date="2027-01-01",
+        today=today
+    )
+    
+    # Pharmacist cannot adjust stock
+    with pytest.raises(AuthorizationError):
+        inv_service.adjust_stock(pharmacist, batch.id, 90, "DAMAGED")
+        
+    # Same quantity
+    with pytest.raises(ValidationError):
+        inv_service.adjust_stock(admin, batch.id, 100, "DAMAGED")
+        
+    # Valid adjustment
+    inv_service.adjust_stock(admin, batch.id, 90, "DAMAGED")
+    updated = inv_service.batch_repo.get(batch.id)
+    assert updated.quantity == 90
+    
+def test_write_off_expired(db, admin, medicine, today):
+    inv_service = InventoryService(db)
+    # Receive in the past so it's expired today
+    past_today = date(2025, 1, 1)
+    batch = inv_service.receive_stock(
+        admin, medicine.id, batch_no="B_EXPIRED", quantity=100,
+        purchase_price=Decimal("0.50"), expiry_date="2026-01-01",
+        today=past_today
+    )
+    
+    # Try to write off when it's not expired
+    with pytest.raises(ValidationError, match="not expired"):
+        inv_service.write_off_expired(admin, batch.id, today=date(2025, 12, 31))
+        
+    # Write off successfully when expired
+    inv_service.write_off_expired(admin, batch.id, today=today)
+    
+    updated = inv_service.batch_repo.get(batch.id)
+    assert updated.quantity == 0
+    
+    # Cannot write off twice
+    with pytest.raises(ValidationError, match="already has 0 quantity"):
+        inv_service.write_off_expired(admin, batch.id, today=today)

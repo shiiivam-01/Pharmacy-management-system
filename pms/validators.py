@@ -54,3 +54,8 @@ def validate_password_strength(password: str) -> str:
     if not password or len(password) < 8:
         raise ValidationError("Password must be at least 8 characters long.")
     return password
+
+def validate_choice(value: str, choices: list, field_name: str) -> str:
+    if value not in choices:
+        raise ValidationError(f"{field_name} must be one of {', '.join(choices)}.")
+    return value
