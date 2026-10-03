@@ -72,14 +72,14 @@ Update the **Status** column as you work: `☐` not started, `🔄` in progress,
 | ID | Task | Est. | Depends on | Covers | Done when | Status |
 |---|---|:---:|---|---|---|:---:|
 | T-001 | Create the repository, folder structure from the README, `.gitignore`, `requirements.txt` (pytest), empty package files | 0.5 h | none | | `python main.py` runs without error (prints a placeholder); folders match the README tree; `data/`, `bills/`, `reports/`, `logs/`, `backups/` are ignored by Git | ✅ |
-| T-002 | `config.py` and `logger.py` (rotating file log plus console) | 1 h | T-001 | FR-SYS-01, FR-SYS-02 | Settings are read from one module; a log line appears in `logs/pms.log`; log rotates at 1 MB | ☐ |
-| T-003 | `exceptions.py`, `validators.py`, `money.py` with tests | 1.5 h | T-001 | NFR-06 | Exception hierarchy exists; validators reject bad input with `ValidationError`; money converts both ways with half-up rounding; tests pass | ☐ |
-| T-004 | `schema.sql` and `database.py` (`connect`, `init_schema`, `transaction`) | 2 h | T-002 | FR-SYS-03, NFR-03 | First run creates the database; foreign keys are on; `transaction()` rolls back on error (tested); `user_version` is 1 | ☐ |
-| T-005 | `security.py`: password hash and verify, `PERMISSIONS`, `require` | 1 h | T-003 | NFR-04, FR-AUTH-03 | Hash format as in the architecture; same password gives different hashes; verify works; `require` raises `AuthorizationError` for a disallowed role; tests pass | ☐ |
-| T-006 | `models.py` dataclasses | 1 h | T-001 | | All models in the architecture exist with type hints | ☐ |
-| T-007 | Test infrastructure: `conftest.py` with in-memory database and session fixtures | 1 h | T-004, T-006 | NFR-07 | A sample test using the `db` fixture passes; tests never touch `data/pharmacy.db` | ☐ |
-| T-008 | `cli/console.py` helpers (`ask_text`, `ask_int`, `ask_decimal`, `ask_date`, `ask_choice`, `confirm`, `print_table`) and the `app.py` menu loop skeleton | 1.5 h | T-003 | NFR-01 | Helpers re-prompt on bad input; a table prints aligned; the skeleton shows a main menu and exits cleanly | ☐ |
-| T-009 | `EmployeeRepository`, `AuthService` (bootstrap, login), login menu | 2.5 h | T-004, T-005, T-007, T-008 | FR-AUTH-01, FR-AUTH-02 | Empty database triggers Admin creation once; correct login opens a session; wrong login shows one generic message; inactive account cannot log in; tests pass | ☐ |
+| T-002 | `config.py` and `logger.py` (rotating file log plus console) | 1 h | T-001 | FR-SYS-01, FR-SYS-02 | Settings are read from one module; a log line appears in `logs/pms.log`; log rotates at 1 MB | ✅ |
+| T-003 | `exceptions.py`, `validators.py`, `money.py` with tests | 1.5 h | T-001 | NFR-06 | Exception hierarchy exists; validators reject bad input with `ValidationError`; money converts both ways with half-up rounding; tests pass | ✅ |
+| T-004 | `schema.sql` and `database.py` (`connect`, `init_schema`, `transaction`) | 2 h | T-002 | FR-SYS-03, NFR-03 | First run creates the database; foreign keys are on; `transaction()` rolls back on error (tested); `user_version` is 1 | ✅ |
+| T-005 | `security.py`: password hash and verify, `PERMISSIONS`, `require` | 1 h | T-003 | NFR-04, FR-AUTH-03 | Hash format as in the architecture; same password gives different hashes; verify works; `require` raises `AuthorizationError` for a disallowed role; tests pass | ✅ |
+| T-006 | `models.py` dataclasses | 1 h | T-001 | | All models in the architecture exist with type hints | ✅ |
+| T-007 | Test infrastructure: `conftest.py` with in-memory database and session fixtures | 1 h | T-004, T-006 | NFR-07 | A sample test using the `db` fixture passes; tests never touch `data/pharmacy.db` | ✅ |
+| T-008 | `cli/console.py` helpers (`ask_text`, `ask_int`, `ask_decimal`, `ask_date`, `ask_choice`, `confirm`, `print_table`) and the `app.py` menu loop skeleton | 1.5 h | T-003 | NFR-01 | Helpers re-prompt on bad input; a table prints aligned; the skeleton shows a main menu and exits cleanly | ✅ |
+| T-009 | `EmployeeRepository`, `AuthService` (bootstrap, login), login menu | 2.5 h | T-004, T-005, T-007, T-008 | FR-AUTH-01, FR-AUTH-02 | Empty database triggers Admin creation once; correct login opens a session; wrong login shows one generic message; inactive account cannot log in; tests pass | ✅ |
 
 **Milestone check (M0 foundation):** run the app twice. The first run creates an Admin; the second run goes straight to login.
 
@@ -87,15 +87,15 @@ Update the **Status** column as you work: `☐` not started, `🔄` in progress,
 
 | ID | Task | Est. | Depends on | Covers | Done when | Status |
 |---|---|:---:|---|---|---|:---:|
-| T-101 | Suppliers: `SupplierRepository`, `SupplierService`, `supplier_menu` (add, list, update, deactivate) | 2 h | T-009 | FR-SUP-01 to 03 | All four actions work from the menu; duplicate name rejected; inactive supplier hidden from selection; tests pass | ☐ |
-| T-102 | Medicines: repository, service, menu (add, list, view, update, deactivate, search) | 4 h | T-101 | FR-MED-01 to 05 | Duplicate (name, form, strength) rejected; search is partial and case-insensitive; deactivated medicine does not appear in search for billing; tests pass | ☐ |
-| T-103 | Inventory: `BatchRepository`, `InventoryService.receive_stock`, view batches, available stock | 3 h | T-102 | FR-INV-01 to 03 | Receiving a batch raises available stock; duplicate batch number and past expiry rejected; expired batches excluded from availability; tests pass | ☐ |
-| T-104 | FEFO allocation function with thorough unit tests | 2 h | T-103 | FR-BILL-02, BR-02 | Tests cover single batch, spanning batches, expired skipped, tie on expiry, insufficient stock | ☐ |
-| T-105 | Billing part 1: cart handling, totals and rounding in `BillingService` | 3 h | T-104 | FR-BILL-01, 03, 04 | Same medicine merges; totals match hand-calculated cases including a rounding edge case; insufficient stock rejected with available quantity | ☐ |
-| T-106 | Billing part 2: atomic `create_sale`, bill numbering, sale repository | 3 h | T-105 | FR-BILL-05, 06, BR-12, BR-13 | Sale, items and stock change commit together; an injected failure rolls everything back (tested); bill numbers are unique and increasing | ☐ |
-| T-107 | Bill rendering to console and `bills/<bill_no>.txt`; `billing_menu` new-sale flow | 1.5 h | T-106 | FR-BILL-06 | Bill matches the README sample layout; file exists after a sale; the whole flow works from the menu | ☐ |
-| T-108 | Enforce roles in every service and filter menus by role | 1.5 h | T-107 | FR-AUTH-03 | Each Admin-only action raises `AuthorizationError` for a Pharmacist (tested); menus show only allowed items | ☐ |
-| T-109 | Integration tests: receive, sell, check stock; sell across batches; deny pharmacist | 1.5 h | T-108 | | End-to-end tests pass using only service calls | ☐ |
+| T-101 | Suppliers: `SupplierRepository`, `SupplierService`, `supplier_menu` (add, list, update, deactivate) | 2 h | T-009 | FR-SUP-01 to 03 | All four actions work from the menu; duplicate name rejected; inactive supplier hidden from selection; tests pass | ✅ |
+| T-102 | Medicines: repository, service, menu (add, list, view, update, deactivate, search) | 4 h | T-101 | FR-MED-01 to 05 | Duplicate (name, form, strength) rejected; search is partial and case-insensitive; deactivated medicine does not appear in search for billing; tests pass | ✅ |
+| T-103 | Inventory: `BatchRepository`, `InventoryService.receive_stock`, view batches, available stock | 3 h | T-102 | FR-INV-01 to 03 | Receiving a batch raises available stock; duplicate batch number and past expiry rejected; expired batches excluded from availability; tests pass | ✅ |
+| T-104 | FEFO allocation function with thorough unit tests | 2 h | T-103 | FR-BILL-02, BR-02 | Tests cover single batch, spanning batches, expired skipped, tie on expiry, insufficient stock | ✅ |
+| T-105 | Billing part 1: cart handling, totals and rounding in `BillingService` | 3 h | T-104 | FR-BILL-01, 03, 04 | Same medicine merges; totals match hand-calculated cases including a rounding edge case; insufficient stock rejected with available quantity | ✅ |
+| T-106 | Billing part 2: atomic `create_sale`, bill numbering, sale repository | 3 h | T-105 | FR-BILL-05, 06, BR-12, BR-13 | Sale, items and stock change commit together; an injected failure rolls everything back (tested); bill numbers are unique and increasing | ✅ |
+| T-107 | Bill rendering to console and `bills/<bill_no>.txt`; `billing_menu` new-sale flow | 1.5 h | T-106 | FR-BILL-06 | Bill matches the README sample layout; file exists after a sale; the whole flow works from the menu | ✅ |
+| T-108 | Enforce roles in every service and filter menus by role | 1.5 h | T-107 | FR-AUTH-03 | Each Admin-only action raises `AuthorizationError` for a Pharmacist (tested); menus show only allowed items | ✅ |
+| T-109 | Integration tests: receive, sell, check stock; sell across batches; deny pharmacist | 1.5 h | T-108 | | End-to-end tests pass using only service calls | ✅ |
 
 **Milestone check (M1 MVP):** from a clean database, create a supplier and a medicine, receive two batches with different expiry dates, sell enough to span both, and confirm the bill, the saved file and the remaining stock are correct. Repeat with an expired batch present.
 
