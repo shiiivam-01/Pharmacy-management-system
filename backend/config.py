@@ -5,11 +5,11 @@ from pathlib import Path
 
 # Base directories
 BASE_DIR = Path(__file__).resolve().parent.parent
-DB_PATH = BASE_DIR / "data" / "pharmacy.db"
-BILLS_DIR = BASE_DIR / "bills"
-REPORTS_DIR = BASE_DIR / "reports"
-LOGS_DIR = BASE_DIR / "logs"
-BACKUPS_DIR = BASE_DIR / "backups"
+DB_PATH = BASE_DIR / "runtime_data" / "data" / "pharmacy.db"
+BILLS_DIR = BASE_DIR / "runtime_data" / "bills"
+REPORTS_DIR = BASE_DIR / "runtime_data" / "reports"
+LOGS_DIR = BASE_DIR / "runtime_data" / "logs"
+BACKUPS_DIR = BASE_DIR / "runtime_data" / "backups"
 
 # Shop details
 SHOP_NAME = "CITY PHARMACY"
