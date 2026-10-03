@@ -115,6 +115,9 @@ def test_void_sale(db, admin, today, test_data):
     billing.void_sale(admin, sale.bill_no, "Customer returned")
     
     assert med_service.get_medicine(admin, med1.id, today).available_stock == 100
+    
+    with pytest.raises(ValidationError, match="already VOIDED"):
+        billing.void_sale(admin, sale.bill_no, "Trying again")
 
 def test_sales_history(db, admin, pharmacist, today, test_data):
     med1, _ = test_data

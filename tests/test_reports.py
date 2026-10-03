@@ -82,3 +82,32 @@ def test_expiry_report(db, admin, today, test_data):
     # Within 10 days, shouldn't show up
     expiring_10 = rs.get_expiry_report(admin, 10, today)
     assert len(expiring_10) == 0
+
+def test_range_sales(db, admin, pharmacist, today, test_data):
+    rs = ReportService(db)
+    # Range covers today
+    summary = rs.get_range_sales_summary(admin, today.isoformat(), today.isoformat())
+    assert summary["count"] == 2
+    assert summary["total"] == 3500
+
+def test_top_sellers(db, admin, today, test_data):
+    rs = ReportService(db)
+    top = rs.get_top_sellers(admin, today.isoformat(), today.isoformat())
+    assert len(top) == 2
+    assert top[0]["name"] == "Paracetamol" # 10 sold
+    assert top[0]["total_qty"] == 10
+    assert top[1]["name"] == "Aspirin" # 5 sold
+    assert top[1]["total_qty"] == 5
+
+def test_sales_by_employee(db, admin, pharmacist, today, test_data):
+    rs = ReportService(db)
+    sales = rs.get_sales_by_employee(admin, today.isoformat(), today.isoformat())
+    assert len(sales) >= 2 # Might include other users created by fixtures, but at least admin and pharmacist
+    
+    admin_sales = next(s for s in sales if s["username"] == "admin")
+    assert admin_sales["bills_count"] == 1
+    assert admin_sales["net_total"] == 2000
+    
+    pharm_sales = next(s for s in sales if s["username"] == "pharmacist")
+    assert pharm_sales["bills_count"] == 1
+    assert pharm_sales["net_total"] == 1500

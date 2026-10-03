@@ -25,18 +25,39 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
             print("Invalid choice.")
 
 def _view_logs(conn: sqlite3.Connection):
+    print("\n[View Audit Logs]")
+    emp_id = console.ask_int("Filter by Employee ID (leave blank for any)", required=False)
+    action = console.ask_text("Filter by Action (leave blank for any)", required=False)
+    entity = console.ask_text("Filter by Entity (leave blank for any)", required=False)
+    date_str = console.ask_text("Filter by Date YYYY-MM-DD (leave blank for any)", required=False)
+    
     limit = console.ask_int("Number of entries to view", required=False) or 20
     
-    cursor = conn.execute(
-        """
+    sql = """
         SELECT a.id, e.username, a.action, a.entity, a.entity_id, a.details, a.created_at
         FROM audit_log a
         LEFT JOIN employees e ON a.employee_id = e.id
-        ORDER BY a.id DESC
-        LIMIT ?
-        """,
-        (limit,)
-    )
+        WHERE 1=1
+    """
+    params = []
+    
+    if emp_id:
+        sql += " AND a.employee_id = ?"
+        params.append(emp_id)
+    if action:
+        sql += " AND a.action LIKE ?"
+        params.append(f"%{action}%")
+    if entity:
+        sql += " AND a.entity LIKE ?"
+        params.append(f"%{entity}%")
+    if date_str:
+        sql += " AND date(a.created_at) = ?"
+        params.append(date_str)
+        
+    sql += " ORDER BY a.id DESC LIMIT ?"
+    params.append(limit)
+    
+    cursor = conn.execute(sql, tuple(params))
     rows = cursor.fetchall()
     if not rows:
         print("No audit logs found.")

@@ -119,13 +119,13 @@ Update the **Status** column as you work: `☐` not started, `🔄` in progress,
 
 | ID | Task | Est. | Depends on | Covers | Done when | Status |
 |---|---|:---:|---|---|---|:---:|
-| T-301 | Void sale (Admin) | 2 h | T-205 | FR-BILL-09, BR-14 | Stock restored to the same batches; sale marked VOIDED; excluded from reports; cannot void twice; tests pass | ☐ |
-| T-302 | Audit log: write entries from services and an Admin viewer with filters | 1.5 h | T-109 | FR-AUD-01, 02 | All actions listed in the architecture create entries; no passwords appear in entries | ☐ |
-| T-303 | Login lockout | 1 h | T-009 | FR-AUTH-05 | Fifth failure locks for 5 minutes; success resets; tested with an injected clock | ☐ |
-| T-304 | CSV export for reports; range sales, top sellers, sales by employee | 1 h | T-207 | FR-RPT-04 to 06 | CSV opens in a spreadsheet with a header row and the same figures as the screen | ☐ |
-| T-305 | `scripts/seed_demo.py` | 1 h | T-109 | FR-SYS-04 | One command fills a clean database with realistic data including near-expiry and expired batches | ☐ |
-| T-306 | `scripts/backup_db.py` | 0.5 h | T-004 | FR-SYS-05 | Timestamped copy appears in `backups/` | ☐ |
-| T-307 | Prescription flag with confirmation | 1 h | T-109 | FR-BILL-10 | Flagged medicine requires confirmation; note saved on the sale | ☐ |
+| T-301 | Void sale (Admin) | 2 h | T-205 | FR-BILL-09, BR-14 | Stock restored to the same batches; sale marked VOIDED; excluded from reports; cannot void twice; tests pass | ✅ |
+| T-302 | Audit log: write entries from services and an Admin viewer with filters | 1.5 h | T-109 | FR-AUD-01, 02 | All actions listed in the architecture create entries; no passwords appear in entries | ✅ |
+| T-303 | Login lockout | 1 h | T-009 | FR-AUTH-05 | Fifth failure locks for 5 minutes; success resets; tested with an injected clock | ✅ |
+| T-304 | CSV export for reports; range sales, top sellers, sales by employee | 1 h | T-207 | FR-RPT-04 to 06 | CSV opens in a spreadsheet with a header row and the same figures as the screen | ✅ |
+| T-305 | `scripts/seed_demo.py` | 1 h | T-109 | FR-SYS-04 | One command fills a clean database with realistic data including near-expiry and expired batches | ✅ |
+| T-306 | `scripts/backup_db.py` | 0.5 h | T-004 | FR-SYS-05 | Timestamped copy appears in `backups/` | ✅ |
+| T-307 | Prescription flag with confirmation | 1 h | T-109 | FR-BILL-10 | Flagged medicine requires confirmation; note saved on the sale | ✅ |
 | T-308 | Raise coverage and add edge-case tests; fix the bugs found | 2 h | all P2 | NFR-07 | Coverage on `pms/services` is at least 80 percent; all must-have scenarios from the architecture are tested | ☐ |
 | T-309 | Cleanup: type hints, docstrings, remove dead code, consistent naming, optional linter | 1 h | T-308 | NFR-06, NFR-10 | No unused code; every public function has a docstring and type hints | ☐ |
 

@@ -131,3 +131,55 @@ class ReportService:
         """
         cursor = self.conn.execute(sql, (today.isoformat(), cutoff_date.isoformat()))
         return [dict(r) for r in cursor.fetchall()]
+
+    def get_range_sales_summary(self, actor: Session, start_date: str, end_date: str) -> Dict[str, Any]:
+        require(actor, "audit.view") # Admin only (reusing audit.view as proxy for high-level admin)
+        
+        sql = """
+            SELECT COUNT(*) as count, SUM(subtotal_minor) as subtotal, 
+                   SUM(discount_minor) as discount, SUM(tax_minor) as tax, SUM(total_minor) as total
+            FROM sales
+            WHERE date(created_at) >= ? AND date(created_at) <= ? AND status != 'VOIDED'
+        """
+        cursor = self.conn.execute(sql, (start_date, end_date))
+        row = cursor.fetchone()
+        
+        return {
+            "start_date": start_date,
+            "end_date": end_date,
+            "count": row["count"] or 0,
+            "subtotal": row["subtotal"] or 0,
+            "discount": row["discount"] or 0,
+            "tax": row["tax"] or 0,
+            "total": row["total"] or 0
+        }
+
+    def get_top_sellers(self, actor: Session, start_date: str, end_date: str) -> List[Dict[str, Any]]:
+        require(actor, "audit.view") # Admin only
+        
+        sql = """
+            SELECT m.name, m.form, m.strength, SUM(si.quantity) as total_qty, SUM(si.line_total_minor) as total_revenue
+            FROM sale_items si
+            JOIN sales s ON si.sale_id = s.id
+            JOIN medicines m ON si.medicine_id = m.id
+            WHERE date(s.created_at) >= ? AND date(s.created_at) <= ? AND s.status != 'VOIDED'
+            GROUP BY m.id
+            ORDER BY total_qty DESC
+            LIMIT 10
+        """
+        cursor = self.conn.execute(sql, (start_date, end_date))
+        return [dict(r) for r in cursor.fetchall()]
+
+    def get_sales_by_employee(self, actor: Session, start_date: str, end_date: str) -> List[Dict[str, Any]]:
+        require(actor, "audit.view") # Admin only
+        
+        sql = """
+            SELECT e.id, e.username, e.full_name, COUNT(s.id) as bills_count, SUM(s.total_minor) as net_total
+            FROM employees e
+            LEFT JOIN sales s ON e.id = s.employee_id AND date(s.created_at) >= ? AND date(s.created_at) <= ? AND s.status != 'VOIDED'
+            GROUP BY e.id
+            ORDER BY net_total DESC
+        """
+        cursor = self.conn.execute(sql, (start_date, end_date))
+        return [dict(r) for r in cursor.fetchall()]
+

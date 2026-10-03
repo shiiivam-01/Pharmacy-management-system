@@ -67,3 +67,41 @@ def test_change_password(db, admin):
     # Old password no longer works
     with pytest.raises(AuthenticationError):
         service.login("real_admin", "oldpassword")
+
+def test_login_lockout(db):
+    from datetime import datetime, timedelta
+    from pms.config import LOCKOUT_ATTEMPTS, LOCKOUT_MINUTES
+    from pms.security import hash_password
+    
+    db.execute("DELETE FROM employees")
+    db.commit()
+    service = AuthService(db)
+    
+    pw_hash = hash_password("password123")
+    db.execute("INSERT INTO employees (full_name, role, username, password_hash) VALUES ('Lock', 'PHARMACIST', 'lock_user', ?)", (pw_hash,))
+    db.commit()
+    
+    now = datetime(2026, 1, 1, 12, 0, 0)
+    
+    # Fail multiple times
+    for _ in range(LOCKOUT_ATTEMPTS - 1):
+        with pytest.raises(AuthenticationError, match="Invalid username"):
+            service.login("lock_user", "wrong", now=now)
+            
+    # The final failure that triggers the lockout
+    with pytest.raises(AuthenticationError, match="Invalid username"):
+        service.login("lock_user", "wrong", now=now)
+        
+    # Now locked out even if password is correct
+    with pytest.raises(AuthenticationError, match="Account is locked"):
+        service.login("lock_user", "password123", now=now)
+        
+    # Still locked out 1 minute later
+    now += timedelta(minutes=1)
+    with pytest.raises(AuthenticationError, match="Account is locked"):
+        service.login("lock_user", "password123", now=now)
+        
+    # Lockout expires after LOCKOUT_MINUTES
+    now += timedelta(minutes=LOCKOUT_MINUTES)
+    session = service.login("lock_user", "password123", now=now)
+    assert session.username == "lock_user"

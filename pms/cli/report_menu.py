@@ -7,6 +7,17 @@ from pms.models import Session
 from pms.services.report_service import ReportService
 from pms.money import to_decimal
 from pms.exceptions import PMSError
+import csv
+import os
+
+def _export_csv(filename: str, headers: list, rows: list):
+    os.makedirs("reports", exist_ok=True)
+    filepath = os.path.join("reports", filename)
+    with open(filepath, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(headers)
+        writer.writerows(rows)
+    print(f"Exported to {filepath}")
 
 def show_menu(conn: sqlite3.Connection, actor: Session):
     report_service = ReportService(conn)
@@ -18,6 +29,9 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
         print("3. Expiry Report")
         if actor.role == "ADMIN":
             print("4. Stock Valuation")
+            print("5. Range Sales Summary")
+            print("6. Top 10 Sellers")
+            print("7. Sales by Employee")
         print("0. Back to main menu")
         
         choice = console.ask_text("Enter choice", required=True)
@@ -33,6 +47,12 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
                 _expiry_report(report_service, actor)
             elif choice == "4" and actor.role == "ADMIN":
                 _stock_valuation(report_service, actor)
+            elif choice == "5" and actor.role == "ADMIN":
+                _range_sales(report_service, actor)
+            elif choice == "6" and actor.role == "ADMIN":
+                _top_sellers(report_service, actor)
+            elif choice == "7" and actor.role == "ADMIN":
+                _sales_by_employee(report_service, actor)
             else:
                 print("Invalid choice.")
         except PMSError as e:
@@ -66,8 +86,13 @@ def _daily_sales(report_service: ReportService, actor: Session):
     print(f"Revenue:     {to_decimal(summary['total_revenue'])}")
     
     print("\nBy Payment Method:")
+    csv_rows = []
     for pm, data in summary['by_method'].items():
         print(f"  {pm}: {data['count']} sales, {to_decimal(data['total'])}")
+        csv_rows.append([pm, data['count'], to_decimal(data['total'])])
+        
+    if console.confirm("Export to CSV?"):
+        _export_csv(f"daily_sales_{summary['date']}.csv", ["Payment Method", "Sales Count", "Revenue"], csv_rows)
 
 def _low_stock(report_service: ReportService, actor: Session):
     print("\n[Low Stock Report]")
@@ -84,6 +109,9 @@ def _low_stock(report_service: ReportService, actor: Session):
         rows.append([name, item['available'], item['reorder_level']])
         
     console.print_table(headers, rows)
+    
+    if console.confirm("Export to CSV?"):
+        _export_csv("low_stock_report.csv", headers, rows)
 
 def _expiry_report(report_service: ReportService, actor: Session):
     print("\n[Expiry Report]")
@@ -102,6 +130,9 @@ def _expiry_report(report_service: ReportService, actor: Session):
         rows.append([name, item['batch_no'], item['quantity'], item['expiry_date']])
         
     console.print_table(headers, rows)
+    
+    if console.confirm("Export to CSV?"):
+        _export_csv(f"expiry_report_{days}days.csv", headers, rows)
 
 def _stock_valuation(report_service: ReportService, actor: Session):
     print("\n[Stock Valuation]")
@@ -126,3 +157,59 @@ def _stock_valuation(report_service: ReportService, actor: Session):
                 to_decimal(item['value'])
             ])
         console.print_table(headers, rows)
+        
+        if console.confirm("Export to CSV?"):
+            _export_csv(f"stock_valuation_{val['date']}.csv", headers, rows)
+
+def _range_sales(report_service: ReportService, actor: Session):
+    print("\n[Range Sales Summary]")
+    start = console.ask_date("Start Date", required=True)
+    end = console.ask_date("End Date", required=True)
+    
+    summary = report_service.get_range_sales_summary(actor, start.isoformat(), end.isoformat())
+    print(f"\nSales from {summary['start_date']} to {summary['end_date']}")
+    print(f"Count: {summary['count']}")
+    print(f"Revenue: {to_decimal(summary['total'])}")
+    
+    if console.confirm("Export to CSV?"):
+        _export_csv(f"range_sales_{summary['start_date']}_{summary['end_date']}.csv", 
+                    ["Start", "End", "Count", "Revenue"],
+                    [[summary['start_date'], summary['end_date'], summary['count'], to_decimal(summary['total'])]])
+
+def _top_sellers(report_service: ReportService, actor: Session):
+    print("\n[Top 10 Sellers]")
+    start = console.ask_date("Start Date", required=True)
+    end = console.ask_date("End Date", required=True)
+    
+    items = report_service.get_top_sellers(actor, start.isoformat(), end.isoformat())
+    if not items:
+        print("No sales in this range.")
+        return
+        
+    headers = ["Medicine", "Qty Sold", "Revenue"]
+    rows = []
+    for item in items:
+        name = f"{item['name']} {item['form']} {item['strength']}".strip()
+        rows.append([name, item['total_qty'], to_decimal(item['total_revenue'])])
+        
+    console.print_table(headers, rows)
+    
+    if console.confirm("Export to CSV?"):
+        _export_csv(f"top_sellers_{start.isoformat()}_{end.isoformat()}.csv", headers, rows)
+
+def _sales_by_employee(report_service: ReportService, actor: Session):
+    print("\n[Sales by Employee]")
+    start = console.ask_date("Start Date", required=True)
+    end = console.ask_date("End Date", required=True)
+    
+    items = report_service.get_sales_by_employee(actor, start.isoformat(), end.isoformat())
+    
+    headers = ["Employee ID", "Username", "Name", "Bills Count", "Net Total"]
+    rows = []
+    for item in items:
+        rows.append([item['id'], item['username'], item['full_name'], item['bills_count'], to_decimal(item['net_total'] or 0)])
+        
+    console.print_table(headers, rows)
+    
+    if console.confirm("Export to CSV?"):
+        _export_csv(f"sales_by_employee_{start.isoformat()}_{end.isoformat()}.csv", headers, rows)

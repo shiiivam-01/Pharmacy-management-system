@@ -105,6 +105,14 @@ def _new_sale(conn: sqlite3.Connection, billing: BillingService, med_service: Me
         return
         
     print(f"\nFINAL TOTAL: {to_decimal(totals['total'])}")
+    
+    requires_rx = any(item.requires_prescription for item in cart)
+    if requires_rx:
+        print("\nWARNING: This sale contains prescription medicines!")
+        if not console.confirm("Has a valid prescription been verified?"):
+            print("Sale cancelled (Prescription required).")
+            return
+            
     if not console.confirm("Confirm sale?"):
         print("Sale cancelled.")
         return

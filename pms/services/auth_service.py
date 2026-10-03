@@ -25,17 +25,38 @@ class AuthService:
         password_hash = hash_password(password)
         self.repo.add(full_name, None, "ADMIN", username, password_hash)
         
-    def login(self, username: str, password: str) -> Session:
+    def login(self, username: str, password: str, now=None) -> Session:
         """
         Authenticates a user and returns a Session.
-        Raises AuthenticationError on failure.
+        Raises AuthenticationError on failure or lockout.
         """
+        if now is None:
+            from datetime import datetime
+            now = datetime.now()
+            
         user = self.repo.get_by_username(username)
         if not user or not user.is_active:
             raise AuthenticationError("Invalid username or password")
             
+        if user.locked_until:
+            from datetime import datetime
+            try:
+                locked_until_dt = datetime.fromisoformat(user.locked_until)
+                if now < locked_until_dt:
+                    raise AuthenticationError("Account is locked due to too many failed attempts.")
+            except ValueError:
+                pass
+            
         if not verify_password(password, user.password_hash):
-            self.repo.record_failed_login(user.id)
+            from pms.config import LOCKOUT_ATTEMPTS, LOCKOUT_MINUTES
+            from datetime import timedelta
+            
+            new_attempts = user.failed_attempts + 1
+            lock_until = None
+            if new_attempts >= LOCKOUT_ATTEMPTS:
+                lock_until = (now + timedelta(minutes=LOCKOUT_MINUTES)).isoformat()
+                
+            self.repo.record_failed_login(user.id, lock_until)
             raise AuthenticationError("Invalid username or password")
             
         self.repo.reset_failed_logins(user.id)
