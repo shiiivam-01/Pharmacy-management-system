@@ -183,3 +183,35 @@ class ReportService:
         cursor = self.conn.execute(sql, (start_date, end_date))
         return [dict(r) for r in cursor.fetchall()]
 
+    def get_sales_chart_data(self, actor: Session, days: int = 7) -> List[Dict[str, Any]]:
+        # Pharmacists can see their own chart, Admins can see the global chart
+        from datetime import date, timedelta
+        today = date.today()
+        start_date = (today - timedelta(days=days-1)).isoformat()
+        
+        sql = """
+            SELECT date(created_at) as sale_date, SUM(total_minor) as daily_total
+            FROM sales
+            WHERE date(created_at) >= ? AND date(created_at) <= ? AND status != 'VOIDED'
+        """
+        params = [start_date, today.isoformat()]
+        
+        if actor.role == "PHARMACIST":
+            sql += " AND employee_id = ?"
+            params.append(actor.employee_id)
+            
+        sql += " GROUP BY date(created_at) ORDER BY sale_date ASC"
+        
+        cursor = self.conn.execute(sql, tuple(params))
+        rows = {row["sale_date"]: row["daily_total"] for row in cursor.fetchall()}
+        
+        # Fill in missing days with 0
+        chart_data = []
+        for i in range(days):
+            d = (today - timedelta(days=days-1-i)).isoformat()
+            chart_data.append({
+                "date": d,
+                "total": rows.get(d, 0)
+            })
+            
+        return chart_data

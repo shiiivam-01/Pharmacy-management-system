@@ -32,6 +32,7 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
             print("5. Range Sales Summary")
             print("6. Top 10 Sellers")
             print("7. Sales by Employee")
+        print("8. Visual Sales Chart (Weekly/Monthly)")
         print("0. Back to main menu")
         
         choice = console.ask_text("Enter choice", required=True)
@@ -53,6 +54,8 @@ def show_menu(conn: sqlite3.Connection, actor: Session):
                 _top_sellers(report_service, actor)
             elif choice == "7" and actor.role == "ADMIN":
                 _sales_by_employee(report_service, actor)
+            elif choice == "8":
+                _visual_sales_chart(report_service, actor)
             else:
                 print("Invalid choice.")
         except PMSError as e:
@@ -213,3 +216,37 @@ def _sales_by_employee(report_service: ReportService, actor: Session):
     
     if console.confirm("Export to CSV?"):
         _export_csv(f"sales_by_employee_{start.isoformat()}_{end.isoformat()}.csv", headers, rows)
+
+def _visual_sales_chart(report_service: ReportService, actor: Session):
+    print("\n[Visual Sales Chart]")
+    days = console.ask_int("Enter number of days (e.g., 7 for weekly, 30 for monthly)", required=True)
+    if days <= 0 or days > 365:
+        print("Please enter a valid number of days (1-365).")
+        return
+        
+    chart_data = report_service.get_sales_chart_data(actor, days)
+    
+    # Calculate max for scaling the chart
+    max_total = max((item['total'] for item in chart_data), default=0)
+    
+    print(f"\n--- Sales Chart (Last {days} Days) ---")
+    if max_total == 0:
+        print("No sales data available for this period.")
+        return
+        
+    MAX_BAR_LENGTH = 50
+    for item in chart_data:
+        date_str = item['date'][-5:] # Show only MM-DD for cleaner chart
+        total = item['total']
+        
+        # Calculate bar length (proportional to max_total)
+        bar_len = int((total / max_total) * MAX_BAR_LENGTH) if max_total > 0 else 0
+        bar = '█' * bar_len
+        
+        # Print date, bar, and exact value
+        from backend.money import to_decimal
+        print(f"{date_str} | {bar:<{MAX_BAR_LENGTH}} | {to_decimal(total)}")
+        
+    print("-" * (MAX_BAR_LENGTH + 20))
+    from backend.money import to_decimal
+    print(f"Total over {days} days: {to_decimal(sum(item['total'] for item in chart_data))}")
