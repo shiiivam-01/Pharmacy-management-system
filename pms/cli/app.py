@@ -2,10 +2,49 @@ from pms.cli import console, supplier_menu, medicine_menu, inventory_menu, billi
 from pms.logger import get_logger
 from pms.database import connect, transaction
 from pms.services.auth_service import AuthService
+from pms.services.alert_service import AlertService
 from pms.models import Session
 from pms.exceptions import PMSError
 
 logger = get_logger(__name__)
+
+def _show_dashboard(conn, session: Session):
+    alert_service = AlertService(conn)
+    summary = alert_service.get_dashboard_summary(session)
+    
+    print("\n--- Dashboard ---")
+    print(f"1. Low Stock: {summary['low_stock_count']}")
+    print(f"2. Expiring Soon: {summary['expiring_soon_count']}")
+    print(f"3. Expired: {summary['expired_count']}")
+    
+    while True:
+        choice = console.ask_text("Enter number to view list (or 0 to continue to menu)", required=False)
+        if choice == "0" or choice == "":
+            break
+        elif choice == "1":
+            low = alert_service.get_low_stock_medicines(session)
+            if not low:
+                print("No low stock medicines.")
+            else:
+                headers = ["Med ID", "Name", "Form", "Strength", "Reorder Level", "Available"]
+                rows = [[m["id"], m["name"], m["form"], m["strength"], m["reorder_level"], m["available_stock"]] for m in low]
+                console.print_table(headers, rows)
+        elif choice == "2":
+            soon = alert_service.get_expiring_soon_batches(session)
+            if not soon:
+                print("No batches expiring soon.")
+            else:
+                headers = ["Batch No", "Med Name", "Qty", "Expiry Date"]
+                rows = [[b["batch_no"], b["name"], b["quantity"], b["expiry_date"]] for b in soon]
+                console.print_table(headers, rows)
+        elif choice == "3":
+            expired = alert_service.get_expired_batches(session)
+            if not expired:
+                print("No expired batches.")
+            else:
+                headers = ["Batch No", "Med Name", "Qty", "Expiry Date"]
+                rows = [[b["batch_no"], b["name"], b["quantity"], b["expiry_date"]] for b in expired]
+                console.print_table(headers, rows)
 
 def role_menu(conn, session: Session):
     while True:
@@ -68,6 +107,9 @@ def run():
                 with transaction(conn):
                     session = auth.login(user, pw)
                 print(f"Welcome, {session.full_name} ({session.role})")
+                
+                # Show Dashboard
+                _show_dashboard(conn, session)
                 
                 # Enter main menu
                 role_menu(conn, session)
