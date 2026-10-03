@@ -126,8 +126,8 @@ Update the **Status** column as you work: `☐` not started, `🔄` in progress,
 | T-305 | `scripts/seed_demo.py` | 1 h | T-109 | FR-SYS-04 | One command fills a clean database with realistic data including near-expiry and expired batches | ✅ |
 | T-306 | `scripts/backup_db.py` | 0.5 h | T-004 | FR-SYS-05 | Timestamped copy appears in `backups/` | ✅ |
 | T-307 | Prescription flag with confirmation | 1 h | T-109 | FR-BILL-10 | Flagged medicine requires confirmation; note saved on the sale | ✅ |
-| T-308 | Raise coverage and add edge-case tests; fix the bugs found | 2 h | all P2 | NFR-07 | Coverage on `pms/services` is at least 80 percent; all must-have scenarios from the architecture are tested | ☐ |
-| T-309 | Cleanup: type hints, docstrings, remove dead code, consistent naming, optional linter | 1 h | T-308 | NFR-06, NFR-10 | No unused code; every public function has a docstring and type hints | ☐ |
+| T-308 | Raise coverage and add edge-case tests; fix the bugs found | 2 h | all P2 | NFR-07 | Coverage on `pms/services` is at least 80 percent; all must-have scenarios from the architecture are tested | ✅ |
+| T-309 | Cleanup: type hints, docstrings, remove dead code, consistent naming, optional linter | 1 h | T-308 | NFR-06, NFR-10 | No unused code; every public function has a docstring and type hints | ✅ |
 
 ## 8. P4: Future ideas
 
