@@ -16,20 +16,20 @@ class SupplierService:
 
     def _write_audit(self, actor: Session, action: str, entity_id: int):
         self.conn.execute(
-            "INSERT INTO audit_log (employee_id, action, entity, entity_id) VALUES (?, ?, ?, ?)",
-            (actor.employee_id, action, "Supplier", entity_id)
+            "INSERT INTO audit_log (store_id, employee_id, action, entity, entity_id) VALUES (?, ?, ?, ?, ?)",
+            (actor.store_id, actor.employee_id, action, "Supplier", entity_id)
         )
 
     def list_suppliers(self, actor: Session, active_only: bool = False) -> List[Supplier]:
         require(actor, "supplier.view")
-        suppliers = self.repo.list_all(active_only)
+        suppliers = self.repo.list_all(actor.store_id, active_only)
         for supplier in suppliers:
-            supplier.medicine_count = self.repo.count_medicines(supplier.id)
+            supplier.medicine_count = self.repo.count_medicines(actor.store_id, supplier.id)
         return suppliers
 
     def get_supplier(self, actor: Session, supplier_id: int) -> Supplier:
         require(actor, "supplier.view")
-        supplier = self.repo.get(supplier_id)
+        supplier = self.repo.get(actor.store_id, supplier_id)
         if not supplier:
             raise NotFoundError(f"Supplier ID {supplier_id} not found.")
         return supplier
@@ -43,12 +43,12 @@ class SupplierService:
         email = v.validate_email(email) if email else None
         
         try:
-            supplier_id = self.repo.add(name, contact_person, phone, email, address)
+            supplier_id = self.repo.add(actor.store_id, name, contact_person, phone, email, address)
             self._write_audit(actor, "CREATE_SUPPLIER", supplier_id)
             return self.get_supplier(actor, supplier_id)
         except sqlite3.IntegrityError as e:
             if "UNIQUE" in str(e):
-                raise DuplicateError(f"Supplier with name '{name}' already exists.")
+                raise DuplicateError(f"Supplier with name '{name}' already exists in this store.")
             raise
 
     def update_supplier(self, actor: Session, supplier_id: int, name: str, 
@@ -64,16 +64,16 @@ class SupplierService:
         email = v.validate_email(email) if email else None
         
         try:
-            self.repo.update(supplier_id, name, contact_person, phone, email, address)
+            self.repo.update(actor.store_id, supplier_id, name, contact_person, phone, email, address)
             self._write_audit(actor, "UPDATE_SUPPLIER", supplier_id)
             return self.get_supplier(actor, supplier_id)
         except sqlite3.IntegrityError as e:
             if "UNIQUE" in str(e):
-                raise DuplicateError(f"Supplier with name '{name}' already exists.")
+                raise DuplicateError(f"Supplier with name '{name}' already exists in this store.")
             raise
 
     def deactivate_supplier(self, actor: Session, supplier_id: int) -> None:
         require(actor, "supplier.write")
         self.get_supplier(actor, supplier_id) # ensure exists
-        self.repo.set_active(supplier_id, 0)
+        self.repo.set_active(actor.store_id, supplier_id, 0)
         self._write_audit(actor, "DEACTIVATE_SUPPLIER", supplier_id)

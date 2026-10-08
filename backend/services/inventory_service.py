@@ -21,8 +21,8 @@ class InventoryService:
 
     def _write_audit(self, actor: Session, action: str, entity_id: int, details: str = None):
         self.conn.execute(
-            "INSERT INTO audit_log (employee_id, action, entity, entity_id, details) VALUES (?, ?, ?, ?, ?)",
-            (actor.employee_id, action, "Batch", entity_id, details)
+            "INSERT INTO audit_log (store_id, employee_id, action, entity, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)",
+            (actor.store_id, actor.employee_id, action, "Batch", entity_id, details)
         )
 
     def receive_stock(self, actor: Session, medicine_id: int, batch_no: str,
@@ -33,7 +33,7 @@ class InventoryService:
         if today is None:
             today = date.today()
             
-        med = self.med_repo.get(medicine_id)
+        med = self.med_repo.get(actor.store_id, medicine_id)
         if not med:
             raise NotFoundError(f"Medicine {medicine_id} not found.")
             
@@ -49,11 +49,11 @@ class InventoryService:
             
         try:
             batch_id = self.batch_repo.add(
-                medicine_id, supplier_id, batch_no, qty, pp_minor,
+                actor.store_id, medicine_id, supplier_id, batch_no, qty, pp_minor,
                 expiry_date, actor.employee_id
             )
             self._write_audit(actor, "RECEIVE_STOCK", batch_id, f"Qty: {qty}")
-            return self.batch_repo.get(batch_id)
+            return self.batch_repo.get(actor.store_id, batch_id)
         except sqlite3.IntegrityError as e:
             if "UNIQUE" in str(e):
                 raise DuplicateError(f"Batch '{batch_no}' already exists for this medicine.")
@@ -65,7 +65,7 @@ class InventoryService:
         if today is None:
             today = date.today()
             
-        batches = self.batch_repo.list_by_medicine(medicine_id, active_only=available_only, today_str=today.isoformat())
+        batches = self.batch_repo.list_by_medicine(actor.store_id, medicine_id, active_only=available_only, today_str=today.isoformat())
         
         for b in batches:
             b_exp = date.fromisoformat(b.expiry_date)
@@ -75,7 +75,7 @@ class InventoryService:
 
     def adjust_stock(self, actor: Session, batch_id: int, new_quantity: int, reason: str, note: str = None) -> Batch:
         require(actor, "inventory.adjust")
-        batch = self.batch_repo.get(batch_id)
+        batch = self.batch_repo.get(actor.store_id, batch_id)
         if not batch:
             raise NotFoundError("Batch not found.")
             
@@ -86,21 +86,21 @@ class InventoryService:
         reason = v.validate_choice(reason.upper(), ["DAMAGED", "LOST", "CORRECTION"], "Reason")
         delta = new_quantity - batch.quantity
         
-        self.batch_repo.update_quantity(batch_id, new_quantity)
+        self.batch_repo.update_quantity(actor.store_id, batch_id, new_quantity)
         
         self.conn.execute(
-            "INSERT INTO stock_adjustments (batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?)",
-            (batch_id, actor.employee_id, delta, reason, note)
+            "INSERT INTO stock_adjustments (store_id, batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?, ?)",
+            (actor.store_id, batch_id, actor.employee_id, delta, reason, note)
         )
         self._write_audit(actor, "ADJUST_STOCK", batch_id, f"Delta: {delta}, Reason: {reason}")
-        return self.batch_repo.get(batch_id)
+        return self.batch_repo.get(actor.store_id, batch_id)
 
     def write_off_expired(self, actor: Session, batch_id: int, today: date = None) -> Batch:
         require(actor, "inventory.adjust")
         if today is None:
             today = date.today()
             
-        batch = self.batch_repo.get(batch_id)
+        batch = self.batch_repo.get(actor.store_id, batch_id)
         if not batch:
             raise NotFoundError("Batch not found.")
             
@@ -112,11 +112,11 @@ class InventoryService:
             raise ValidationError("Batch already has 0 quantity.")
             
         delta = -batch.quantity
-        self.batch_repo.update_quantity(batch_id, 0)
+        self.batch_repo.update_quantity(actor.store_id, batch_id, 0)
         
         self.conn.execute(
-            "INSERT INTO stock_adjustments (batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?)",
-            (batch_id, actor.employee_id, delta, "EXPIRED_WRITE_OFF", "System write-off")
+            "INSERT INTO stock_adjustments (store_id, batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?, ?)",
+            (actor.store_id, batch_id, actor.employee_id, delta, "EXPIRED_WRITE_OFF", "System write-off")
         )
         self._write_audit(actor, "WRITE_OFF", batch_id, f"Written off {abs(delta)} items")
-        return self.batch_repo.get(batch_id)
+        return self.batch_repo.get(actor.store_id, batch_id)

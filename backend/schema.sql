@@ -1,7 +1,17 @@
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE stores (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_uid TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    owner_name TEXT NOT NULL,
+    location TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+);
+
 CREATE TABLE employees (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id        INTEGER NOT NULL REFERENCES stores (id),
     full_name       TEXT    NOT NULL,
     phone           TEXT,
     role            TEXT    NOT NULL CHECK (role IN ('ADMIN', 'PHARMACIST')),
@@ -17,17 +27,20 @@ CREATE TABLE employees (
 
 CREATE TABLE suppliers (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
-    name           TEXT    NOT NULL UNIQUE COLLATE NOCASE,
+    store_id       INTEGER NOT NULL REFERENCES stores (id),
+    name           TEXT    NOT NULL COLLATE NOCASE,
     contact_person TEXT,
     phone          TEXT,
     email          TEXT,
     address        TEXT,
     is_active      INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
-    created_at     TEXT    NOT NULL DEFAULT (datetime('now', 'localtime'))
+    created_at     TEXT    NOT NULL DEFAULT (datetime('now', 'localtime')),
+    UNIQUE (store_id, name)
 );
 
 CREATE TABLE medicines (
     id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id              INTEGER NOT NULL REFERENCES stores (id),
     name                  TEXT    NOT NULL COLLATE NOCASE,
     generic_name          TEXT    COLLATE NOCASE,
     form                  TEXT    NOT NULL COLLATE NOCASE,   -- tablet, capsule, syrup, injection ...
@@ -40,15 +53,17 @@ CREATE TABLE medicines (
     reorder_level         INTEGER NOT NULL DEFAULT 10 CHECK (reorder_level >= 0),
     requires_prescription INTEGER NOT NULL DEFAULT 0 CHECK (requires_prescription IN (0, 1)),
     is_active             INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+    description           TEXT,
     created_at            TEXT    NOT NULL DEFAULT (datetime('now', 'localtime')),
     updated_at            TEXT    NOT NULL DEFAULT (datetime('now', 'localtime')),
-    UNIQUE (name, form, strength)
+    UNIQUE (store_id, name, form, strength)
 );
-CREATE INDEX idx_medicines_generic  ON medicines (generic_name);
-CREATE INDEX idx_medicines_category ON medicines (category);
+CREATE INDEX idx_medicines_generic  ON medicines (store_id, generic_name);
+CREATE INDEX idx_medicines_category ON medicines (store_id, category);
 
 CREATE TABLE batches (
     id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id             INTEGER NOT NULL REFERENCES stores (id),
     medicine_id          INTEGER NOT NULL REFERENCES medicines (id),
     supplier_id          INTEGER REFERENCES suppliers (id),
     batch_no             TEXT    NOT NULL,
@@ -58,14 +73,15 @@ CREATE TABLE batches (
     expiry_date          TEXT    NOT NULL,                  -- YYYY-MM-DD
     received_on          TEXT    NOT NULL DEFAULT (date('now', 'localtime')),
     received_by          INTEGER REFERENCES employees (id),
-    UNIQUE (medicine_id, batch_no)
+    UNIQUE (store_id, medicine_id, batch_no)
 );
-CREATE INDEX idx_batches_fefo   ON batches (medicine_id, expiry_date) WHERE quantity > 0;
-CREATE INDEX idx_batches_expiry ON batches (expiry_date);
+CREATE INDEX idx_batches_fefo   ON batches (store_id, medicine_id, expiry_date) WHERE quantity > 0;
+CREATE INDEX idx_batches_expiry ON batches (store_id, expiry_date);
 
 CREATE TABLE sales (
     id                INTEGER PRIMARY KEY AUTOINCREMENT,
-    bill_no           TEXT    NOT NULL UNIQUE,             -- PMS-YYYYMMDD-NNNN
+    store_id          INTEGER NOT NULL REFERENCES stores (id),
+    bill_no           TEXT    NOT NULL,             -- PMS-YYYYMMDD-NNNN
     employee_id       INTEGER NOT NULL REFERENCES employees (id),
     customer_name     TEXT,
     prescription_note TEXT,
@@ -79,13 +95,15 @@ CREATE TABLE sales (
     void_reason       TEXT,
     voided_by         INTEGER REFERENCES employees (id),
     voided_at         TEXT,
-    created_at        TEXT    NOT NULL DEFAULT (datetime('now', 'localtime'))
+    created_at        TEXT    NOT NULL DEFAULT (datetime('now', 'localtime')),
+    UNIQUE (store_id, bill_no)
 );
-CREATE INDEX idx_sales_created  ON sales (created_at);
-CREATE INDEX idx_sales_employee ON sales (employee_id, created_at);
+CREATE INDEX idx_sales_created  ON sales (store_id, created_at);
+CREATE INDEX idx_sales_employee ON sales (store_id, employee_id, created_at);
 
 CREATE TABLE sale_items (
     id               INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id         INTEGER NOT NULL REFERENCES stores (id),
     sale_id          INTEGER NOT NULL REFERENCES sales (id),
     medicine_id      INTEGER NOT NULL REFERENCES medicines (id),
     batch_id         INTEGER NOT NULL REFERENCES batches (id),
@@ -94,11 +112,12 @@ CREATE TABLE sale_items (
     tax_percent      REAL    NOT NULL DEFAULT 0,                      -- copied at sale time
     line_total_minor INTEGER NOT NULL                                 -- quantity x unit price, before discount and tax
 );
-CREATE INDEX idx_sale_items_sale     ON sale_items (sale_id);
-CREATE INDEX idx_sale_items_medicine ON sale_items (medicine_id);
+CREATE INDEX idx_sale_items_sale     ON sale_items (store_id, sale_id);
+CREATE INDEX idx_sale_items_medicine ON sale_items (store_id, medicine_id);
 
 CREATE TABLE stock_adjustments (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id    INTEGER NOT NULL REFERENCES stores (id),
     batch_id    INTEGER NOT NULL REFERENCES batches (id),
     employee_id INTEGER NOT NULL REFERENCES employees (id),
     delta       INTEGER NOT NULL CHECK (delta <> 0),
@@ -109,6 +128,7 @@ CREATE TABLE stock_adjustments (
 
 CREATE TABLE audit_log (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id    INTEGER REFERENCES stores (id),
     employee_id INTEGER REFERENCES employees (id),   -- NULL for failed logins of unknown users
     action      TEXT    NOT NULL,
     entity      TEXT,
@@ -116,6 +136,6 @@ CREATE TABLE audit_log (
     details     TEXT,
     created_at  TEXT    NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
-CREATE INDEX idx_audit_created ON audit_log (created_at);
+CREATE INDEX idx_audit_created ON audit_log (store_id, created_at);
 
-PRAGMA user_version = 1;
+PRAGMA user_version = 2;

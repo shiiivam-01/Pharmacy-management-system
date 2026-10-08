@@ -2,9 +2,9 @@
 Billing service.
 """
 import sqlite3
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from datetime import date
-from backend.models import Session, CartLine, Sale
+from backend.models import Session, CartLine, Sale, SaleItem
 from backend.repositories.medicine_repository import MedicineRepository
 from backend.repositories.batch_repository import BatchRepository
 from backend.repositories.sale_repository import SaleRepository
@@ -24,8 +24,8 @@ class BillingService:
 
     def _write_audit(self, actor: Session, action: str, entity_id: int, details: str = None):
         self.conn.execute(
-            "INSERT INTO audit_log (employee_id, action, entity, entity_id, details) VALUES (?, ?, ?, ?, ?)",
-            (actor.employee_id, action, "Sale", entity_id, details)
+            "INSERT INTO audit_log (store_id, employee_id, action, entity, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)",
+            (actor.store_id, actor.employee_id, action, "Sale", entity_id, details)
         )
 
     def add_to_cart(self, actor: Session, cart: List[CartLine], medicine_id: int, quantity: int, today: date = None) -> List[CartLine]:
@@ -93,15 +93,15 @@ class BillingService:
             "total": total
         }
 
-    def _generate_bill_no(self, today: date) -> str:
+    def _generate_bill_no(self, store_id: int, today: date) -> str:
         today_str = today.isoformat()
-        count = self.sale_repo.count_sales_today(today_str)
+        count = self.sale_repo.count_sales_today(store_id, today_str)
         return f"PMS-{today.strftime('%Y%m%d')}-{count + 1:04d}"
 
     def create_sale(self, actor: Session, cart: List[CartLine], customer_name: Optional[str] = None,
                     prescription_note: Optional[str] = None, discount_percent: float = 0.0,
                     payment_method: str = "CASH", today: date = None) -> Sale:
-        require(actor, "medicine.view") # Creating a sale requires viewing medicines implicitly
+        require(actor, "medicine.view")
         
         if not cart:
             raise ValidationError("Cart is empty.")
@@ -116,7 +116,7 @@ class BillingService:
         # Re-check stock and allocate FEFO per line
         allocations = []
         for item in cart:
-            batches = self.batch_repo.list_by_medicine(item.medicine_id, active_only=True, today_str=today.isoformat())
+            batches = self.batch_repo.list_by_medicine(actor.store_id, item.medicine_id, active_only=True, today_str=today.isoformat())
             try:
                 line_allocations = allocate_fefo(batches, item.quantity, today)
                 allocations.append((item, line_allocations))
@@ -125,9 +125,10 @@ class BillingService:
 
         totals = self.calculate_totals(cart, discount_percent)
         
-        bill_no = self._generate_bill_no(today)
+        bill_no = self._generate_bill_no(actor.store_id, today)
         
         sale_id = self.sale_repo.add_sale(
+            store_id=actor.store_id,
             bill_no=bill_no,
             employee_id=actor.employee_id,
             customer_name=customer_name,
@@ -144,6 +145,7 @@ class BillingService:
             for batch, qty_taken in line_allocations:
                 batch_line_total = qty_taken * item.unit_price_minor
                 self.sale_repo.add_sale_item(
+                    store_id=actor.store_id,
                     sale_id=sale_id,
                     medicine_id=item.medicine_id,
                     batch_id=batch.id,
@@ -153,16 +155,16 @@ class BillingService:
                     line_total_minor=batch_line_total
                 )
                 
-                self.batch_repo.update_quantity(batch.id, batch.quantity - qty_taken)
+                self.batch_repo.update_quantity(actor.store_id, batch.id, batch.quantity - qty_taken)
                 
         self._write_audit(actor, "CREATE_SALE", sale_id, f"Bill No: {bill_no}, Total: {totals['total']}")
         
-        return self.sale_repo.get_sale_by_bill_no(bill_no)
+        return self.sale_repo.get_sale_by_bill_no(actor.store_id, bill_no)
 
     def void_sale(self, actor: Session, bill_no: str, reason: str):
         require(actor, "inventory.adjust") # Admin only
         
-        sale = self.sale_repo.get_sale_by_bill_no(bill_no)
+        sale = self.sale_repo.get_sale_by_bill_no(actor.store_id, bill_no)
         if not sale:
             raise ValidationError(f"Bill '{bill_no}' not found.")
         if sale.status != "COMPLETED":
@@ -171,32 +173,32 @@ class BillingService:
         if not reason.strip():
             raise ValidationError("Reason is required.")
             
-        items = self.sale_repo.get_sale_items(sale.id)
+        items = self.sale_repo.get_sale_items(actor.store_id, sale.id)
         for item in items:
-            batch = self.batch_repo.get(item.batch_id)
+            batch = self.batch_repo.get(actor.store_id, item.batch_id)
             if batch:
-                self.batch_repo.update_quantity(batch.id, batch.quantity + item.quantity)
+                self.batch_repo.update_quantity(actor.store_id, batch.id, batch.quantity + item.quantity)
                 self.conn.execute(
-                    "INSERT INTO stock_adjustments (batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?)",
-                    (batch.id, actor.employee_id, item.quantity, "SALE_VOID", f"Voiding bill {bill_no}")
+                    "INSERT INTO stock_adjustments (store_id, batch_id, employee_id, delta, reason, note) VALUES (?, ?, ?, ?, ?, ?)",
+                    (actor.store_id, batch.id, actor.employee_id, item.quantity, "SALE_VOID", f"Voiding bill {bill_no}")
                 )
                 
-        self.sale_repo.set_sale_status(sale.id, "VOIDED", reason, actor.employee_id)
+        self.sale_repo.set_sale_status(actor.store_id, sale.id, "VOIDED", reason, actor.employee_id)
         self._write_audit(actor, "VOID_SALE", sale.id, f"Bill No: {bill_no}, Reason: {reason}")
 
     def get_sales_history(self, actor: Session, date_filter: Optional[str] = None) -> List[Sale]:
         require(actor, "medicine.view")
         employee_id = None if actor.role == "ADMIN" else actor.employee_id
-        return self.sale_repo.list_sales(employee_id=employee_id, date_str=date_filter)
+        return self.sale_repo.list_sales(actor.store_id, employee_id=employee_id, date_str=date_filter)
 
     def get_sale_details(self, actor: Session, bill_no: str) -> Tuple[Sale, List[SaleItem]]:
         require(actor, "medicine.view")
-        sale = self.sale_repo.get_sale_by_bill_no(bill_no)
+        sale = self.sale_repo.get_sale_by_bill_no(actor.store_id, bill_no)
         if not sale:
             raise ValidationError(f"Bill '{bill_no}' not found.")
             
         if actor.role != "ADMIN" and sale.employee_id != actor.employee_id:
             raise ValidationError(f"You do not have permission to view bill '{bill_no}'.")
             
-        items = self.sale_repo.get_sale_items(sale.id)
+        items = self.sale_repo.get_sale_items(actor.store_id, sale.id)
         return sale, items

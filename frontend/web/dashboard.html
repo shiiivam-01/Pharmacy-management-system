@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aster Pharmacy OS - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; }
+    </style>
+</head>
+<body class="text-gray-900 flex h-screen overflow-hidden">
+    
+    <!-- Sidebar -->
+        <aside class="w-[280px] bg-white border-r border-gray-200 flex flex-col justify-between p-4 flex-shrink-0 h-full">
+        <div>
+            <!-- Logo -->
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden bg-blue-600 text-white font-bold italic"><img src="/static/assets/logo.png" alt="Aster Logo" class="w-full h-full object-cover"></div>
+                    <span class="text-[17px] font-bold tracking-tight text-gray-900 leading-none">aster</span>
+                </div>
+                <button class="text-gray-400 hover:text-gray-900 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">keyboard_double_arrow_left</span>
+                </button>
+            </div>
+
+            <!-- Pharmacy Selector -->
+            <button class="w-full flex items-center justify-between p-2 mb-2 bg-gray-50 rounded-xl border border-gray-100 hover:bg-gray-100 transition-colors">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center text-white"><span class="material-symbols-outlined text-[16px]">business</span></div>
+                    <div class="text-left">
+                        <div class="text-sm font-semibold text-gray-900 leading-tight" id="sidebarStoreName">My Pharmacy</div>
+                        <div class="text-xs text-gray-500" id="sidebarStoreRole">Admin</div>
+                        <div class="text-[10px] text-gray-400 font-mono mt-0.5" id="sidebarStoreUid">UID: ------</div>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-gray-400 text-sm">unfold_more</span>
+            </button>
+            <div class="px-3 py-2 mb-6">
+                <div class="flex items-center justify-between mb-2 cursor-pointer" onclick="document.getElementById('membersList').classList.toggle('hidden')">
+                    <span class="text-sm text-gray-500 font-medium hover:text-gray-900 transition-colors">Members</span>
+                    <span id="membersCount" class="w-5 h-5 flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold">...</span>
+                </div>
+                <div id="membersList" class="space-y-3 mt-4 text-sm hidden">
+                    <!-- Members populated here -->
+                </div>
+            </div>
+
+            <!-- Workspace Section -->
+            <div class="text-xs font-medium text-gray-500 mb-2 px-2">Workspace</div>
+            <nav class="space-y-1 mb-6">
+                <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 bg-[#EEF2FF] text-[#4F46E5] border border-indigo-100 rounded-lg font-medium transition-colors text-[15px]">
+                    <span class="material-symbols-outlined text-[20px]">grid_view</span>
+                    Dashboard
+                </a>
+                <a href="/pos" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg font-medium transition-colors text-[15px]">
+                    <span class="material-symbols-outlined text-[20px]">point_of_sale</span>
+                    POS / Billing
+                </a>
+                <a href="/inventory" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg font-medium transition-colors text-[15px]">
+                    <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                    Inventory
+                </a>
+            
+                <a href="/profile" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg font-medium transition-colors text-[15px]">
+                    <span class="material-symbols-outlined text-[20px]">settings</span>
+                    Settings
+                </a>
+</nav>
+            
+            <!-- Admin Section -->
+            <div id="adminSidebarSection">
+                <div class="text-xs font-medium text-gray-500 mb-2 px-2">Admin</div>
+                <nav class="space-y-1">
+                <a href="/analytics" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg font-medium transition-colors text-[15px]">
+                    <span class="material-symbols-outlined text-[20px]">analytics</span>
+                    Analytics
+                </a>
+            </nav>
+        </div>
+
+        <div class="space-y-4 pt-4 border-t border-gray-100 mt-4">
+            <!-- User Profile -->
+            <div class="flex items-center justify-between px-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full border border-gray-200 bg-gray-50 text-[#4F46E5] flex items-center justify-center font-bold text-sm overflow-hidden" id="userInitials">
+                        SC
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-gray-900" id="userName">Sarah Chen</div>
+                        <div class="text-[11px] text-gray-500" id="userRole">sarah@aster.com</div>
+                    </div>
+                </div>
+                <button onclick="logout()" class="text-gray-400 hover:text-gray-900 transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-y-auto">
+        <!-- Header -->
+        <header class="h-14 border-b border-gray-200 bg-white/50 backdrop-blur-md sticky top-0 flex items-center justify-between px-10 z-10">
+            <div class="flex items-center gap-2 text-sm">
+                <span class="text-gray-500">Workspace</span>
+                <span class="material-symbols-outlined text-[16px] text-gray-400">chevron_right</span>
+                <span class="font-medium text-gray-900">Dashboard</span>
+            </div>
+            <div class="flex items-center gap-6 text-sm text-gray-600">
+                <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[18px] text-green-500">cloud_done</span>
+                    Changes saved
+                </div>
+                <div id="currentDate">Mon, Oct 5, 2026</div>
+                <button class="relative text-gray-400 hover:text-gray-900 transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="p-10 max-w-6xl w-full mx-auto space-y-8">
+            <!-- Greeting & New Sale -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2" id="greetingName">Good morning, Sarah</h1>
+                    <p class="text-gray-500">Here's what's happening at your pharmacy today.</p>
+                </div>
+                <button onclick="window.location.href='/pos'" class="bg-[#4F46E5] hover:bg-[#4338CA] text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-indigo-500/20 flex items-center gap-2 transition-all">
+                    <span class="material-symbols-outlined">add</span>
+                    New sale
+                </button>
+            </div>
+
+            <!-- Metric Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Sales -->
+                <div class="bg-white rounded-[1.5rem] p-6 shadow-sm border border-gray-100 flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-sm font-medium text-gray-500">Daily Sales</span>
+                        <div class="w-8 h-8 rounded-full bg-[#EEF2FF] text-[#4F46E5] flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-gray-900 mb-2" id="dailySalesVal">$0.00</div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-[#4F46E5] font-semibold flex items-center"><span class="material-symbols-outlined text-[16px]">trending_up</span> 0%</span>
+                            <span class="text-gray-500">vs. yesterday • <span id="dailySalesCount">0</span> sales</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Low Stock -->
+                <div class="bg-white rounded-[1.5rem] p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-sm font-medium text-gray-500">Low Stock</span>
+                        <div class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[16px]">inventory_2</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-gray-900 mb-2" id="lowStockVal">0</div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-red-500 font-semibold">Needs attention</span>
+                            <span class="text-gray-500">medicines below reorder level</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Medicines -->
+                <div class="bg-white rounded-[1.5rem] p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-sm font-medium text-gray-500">Total Medicines</span>
+                        <div class="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[16px]">pill</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-gray-900 mb-2" id="totalMedsVal">0</div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-green-600 font-semibold flex items-center">Active</span>
+                            <span class="text-gray-500">medicines in inventory</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-[1.5rem] p-8 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Recent Activity</h2>
+                        <p class="text-sm text-gray-500">A live pulse of your pharmacy.</p>
+                    </div>
+                    <button class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
+                        Today <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                    </button>
+                </div>
+
+                <div class="space-y-6" id="activityList">
+                    <div class="text-gray-400 text-sm py-4">Loading activity...</div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
+                    <div class="text-xs text-gray-500 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">sync</span> Updated just now
+                    </div>
+                    <a href="#" class="text-sm font-medium text-[#4F46E5] hover:underline flex items-center gap-1">
+                        View all activity <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Check Auth - adding fallback to localStorage in case login.html is cached
+        let token = sessionStorage.getItem('token');
+        if (!token) {
+            token = localStorage.getItem('token');
+            if (token) {
+                // Migrate cached localStorage data to sessionStorage
+                sessionStorage.setItem('token', token);
+                sessionStorage.setItem('name', localStorage.getItem('name') || 'Pharmacist');
+                sessionStorage.setItem('role', localStorage.getItem('role') || 'PHARMACIST');
+                sessionStorage.setItem('store_name', localStorage.getItem('store_name') || 'My Pharmacy');
+                sessionStorage.setItem('username', localStorage.getItem('username') || '');
+                // Clear localStorage so it doesn't pollute cross-tab sessions in the future
+                localStorage.clear();
+            }
+        }
+        
+        if (!token) window.location.href = '/';
+
+        const uName = sessionStorage.getItem('name') || 'Pharmacist';
+        const uRole = sessionStorage.getItem('role') || 'PHARMACIST';
+        const storeName = sessionStorage.getItem('store_name') || 'My Pharmacy';
+        document.getElementById('userName').textContent = uName;
+        document.getElementById('greetingName').textContent = 'Good morning, ' + uName.split(' ')[0];
+        document.getElementById('userInitials').textContent = uName.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+        document.getElementById('sidebarStoreName').textContent = storeName;
+        document.getElementById('sidebarStoreRole').textContent = uRole === 'ADMIN' ? 'Owner' : 'Employee';
+        if (uRole !== 'ADMIN') {
+            const adminSection = document.getElementById('adminSidebarSection');
+            if (adminSection) adminSection.style.display = 'none';
+        }
+        document.getElementById('userRole').textContent = sessionStorage.getItem('username') || '';
+
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '/';
+        }
+
+        // Fetch actual data
+        async function fetchDashboardData() {
+            try {
+                // Fetch metrics (simulated combination of analytics & inventory endpoints)
+                // Actually we just fetch medicines to get counts for now, and sales for sales total
+                
+                const [medRes, salesRes] = await Promise.all([
+                    fetch('/api/medicines/', { headers: { 'Authorization': 'Bearer ' + token } }),
+                    // Assuming there is a sales endpoint later, leaving dummy for sales for now 
+                    // until we build pos.html and create_sale API logic.
+                ]);
+
+                if (medRes.ok) {
+                    const meds = await medRes.json();
+                    document.getElementById('totalMedsVal').textContent = meds.length.toLocaleString();
+                    
+                    const lowStock = meds.filter(m => {
+                        const stock = m.batches ? m.batches.reduce((sum, b) => sum + b.quantity, 0) : 0;
+                        return stock < 20; // assumed threshold
+                    });
+                    document.getElementById('lowStockVal').textContent = lowStock.length;
+
+                    renderActivity(meds, lowStock);
+                } else {
+                    if (medRes.status === 401) logout();
+                }
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('activityList').innerHTML = '<div class="text-red-500 text-sm">Failed to load data.</div>';
+            }
+        }
+
+        function renderActivity(meds, lowStock) {
+            const list = document.getElementById('activityList');
+            list.innerHTML = '';
+
+            // Add low stock alerts
+            lowStock.slice(0, 2).forEach(m => {
+                const stock = m.batches ? m.batches.reduce((sum, b) => sum + b.quantity, 0) : 0;
+                list.innerHTML += `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[20px]">warning</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">${m.name} is running low</div>
+                                <div class="text-sm text-gray-500">${m.dosage} • ${m.sku} • ${stock} packs remaining</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-medium text-gray-900">Reorder needed</div>
+                            <div class="text-xs text-gray-500 mb-1">Just now</div>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-50 text-red-600 text-xs font-medium"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Low Stock</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Demo sales activity since no sales api yet
+            list.innerHTML += `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-green-50 text-green-500 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">Daily stock check complete</div>
+                            <div class="text-sm text-gray-500">${meds.length} medicines checked • ${lowStock.length} below reorder level</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-medium text-gray-900">Stock verified</div>
+                        <div class="text-xs text-gray-500 mb-1">9:30 AM</div>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 text-green-600 text-xs font-medium"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Complete</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        fetchDashboardData();
+
+        // Fetch Members
+        async function fetchMembers() {
+            try {
+                const res = await fetch('/api/profile/members', { headers: { 'Authorization': 'Bearer ' + token } });
+                if (res.ok) {
+                    const members = await res.json();
+                    document.getElementById('membersCount').textContent = members.length;
+                    
+                    const list = document.getElementById('membersList');
+                    list.innerHTML = '';
+                    members.forEach(m => {
+                        const initials = m.full_name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                        const isOnline = m.is_active ? '<div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>' : '';
+                        const roleColor = m.role === 'ADMIN' ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 bg-gray-100';
+                        const roleBadge = m.role === 'ADMIN' ? `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 ml-2">ADMIN</span>` : '';
+                        
+                        list.innerHTML += `
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${roleColor}">
+                                        ${initials}
+                                    </div>
+                                    ${isOnline}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-semibold text-gray-900 truncate flex items-center">
+                                        ${m.full_name} ${roleBadge}
+                                    </div>
+                                    <div class="text-[11px] text-gray-500 truncate">${m.role === 'ADMIN' ? 'Owner / Admin' : 'Pharmacist'}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (err) {
+                console.error("Failed to load members", err);
+            }
+        }
+        
+        // Execute fetch if token exists
+        if (token) fetchMembers();
+    
+        // Fetch and display Store UID in sidebar
+        async function fetchGlobalStoreUid() {
+            try {
+                const res = await fetch('/api/profile/store-uid', { headers: { 'Authorization': 'Bearer ' + token } });
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('sidebarStoreUid').textContent = 'UID: ' + data.store_uid;
+                }
+            } catch(e) {}
+        }
+        if (token) fetchGlobalStoreUid();
+        
+</script>
+</body>
+</html>
+

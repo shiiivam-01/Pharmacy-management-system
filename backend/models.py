@@ -8,13 +8,25 @@ from typing import Optional
 class Session:
     """Represents the logged-in user."""
     employee_id: int
+    store_id: int
+    store_name: str
     username: str
     role: str
     full_name: str
 
 @dataclass
+class Store:
+    id: int
+    store_uid: str
+    name: str
+    owner_name: str
+    location: Optional[str]
+    created_at: str
+
+@dataclass
 class Employee:
     id: int
+    store_id: int
     full_name: str
     phone: Optional[str]
     role: str
@@ -29,6 +41,7 @@ class Employee:
 @dataclass
 class Supplier:
     id: int
+    store_id: int
     name: str
     contact_person: Optional[str]
     phone: Optional[str]
@@ -41,6 +54,7 @@ class Supplier:
 @dataclass
 class Medicine:
     id: int
+    store_id: int
     name: str
     generic_name: Optional[str]
     form: str
@@ -55,11 +69,13 @@ class Medicine:
     is_active: int
     created_at: str
     updated_at: str
+    description: Optional[str] = None
     available_stock: int = 0
 
 @dataclass
 class Batch:
     id: int
+    store_id: int
     medicine_id: int
     supplier_id: Optional[int]
     batch_no: str
@@ -74,6 +90,7 @@ class Batch:
 @dataclass
 class Sale:
     id: int
+    store_id: int
     bill_no: str
     employee_id: int
     customer_name: Optional[str]
@@ -93,6 +110,7 @@ class Sale:
 @dataclass
 class SaleItem:
     id: int
+    store_id: int
     sale_id: int
     medicine_id: int
     batch_id: int
@@ -104,6 +122,7 @@ class SaleItem:
 @dataclass
 class StockAdjustment:
     id: int
+    store_id: int
     batch_id: int
     employee_id: int
     delta: int
@@ -114,6 +133,7 @@ class StockAdjustment:
 @dataclass
 class AuditEntry:
     id: int
+    store_id: Optional[int]
     employee_id: Optional[int]
     action: str
     entity: Optional[str]

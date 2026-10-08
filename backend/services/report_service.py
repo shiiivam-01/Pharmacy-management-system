@@ -20,9 +20,9 @@ class ReportService:
             SELECT payment_method, COUNT(*) as count, SUM(subtotal_minor) as subtotal, 
                    SUM(discount_minor) as discount, SUM(tax_minor) as tax, SUM(total_minor) as total
             FROM sales
-            WHERE date(created_at) = ? AND status != 'VOIDED'
+            WHERE store_id = ? AND date(created_at) = ? AND status != 'VOIDED'
         """
-        params = [date_str]
+        params = [actor.store_id, date_str]
         
         if actor.role == "PHARMACIST":
             sql += " AND employee_id = ?"
@@ -73,9 +73,9 @@ class ReportService:
             SELECT m.name, m.form, m.strength, b.batch_no, b.quantity, b.purchase_price_minor
             FROM batches b
             JOIN medicines m ON b.medicine_id = m.id
-            WHERE b.quantity > 0 AND b.expiry_date >= ?
+            WHERE b.store_id = ? AND b.quantity > 0 AND b.expiry_date >= ?
         """
-        cursor = self.conn.execute(sql, (today.isoformat(),))
+        cursor = self.conn.execute(sql, (actor.store_id, today.isoformat()))
         
         total_value = 0
         items = []
@@ -106,12 +106,12 @@ class ReportService:
                    IFNULL(SUM(b.quantity), 0) as available
             FROM medicines m
             LEFT JOIN batches b ON m.id = b.medicine_id AND b.quantity > 0 AND b.expiry_date >= ?
-            WHERE m.is_active = 1
+            WHERE m.store_id = ? AND m.is_active = 1
             GROUP BY m.id
             HAVING available <= m.reorder_level
             ORDER BY available ASC
         """
-        cursor = self.conn.execute(sql, (today.isoformat(),))
+        cursor = self.conn.execute(sql, (today.isoformat(), actor.store_id))
         return [dict(r) for r in cursor.fetchall()]
 
     def get_expiry_report(self, actor: Session, days_ahead: int, today: date = None) -> List[Dict[str, Any]]:
@@ -126,10 +126,10 @@ class ReportService:
             SELECT m.name, m.form, m.strength, b.batch_no, b.quantity, b.expiry_date
             FROM batches b
             JOIN medicines m ON b.medicine_id = m.id
-            WHERE b.quantity > 0 AND b.expiry_date >= ? AND b.expiry_date <= ?
+            WHERE b.store_id = ? AND b.quantity > 0 AND b.expiry_date >= ? AND b.expiry_date <= ?
             ORDER BY b.expiry_date ASC
         """
-        cursor = self.conn.execute(sql, (today.isoformat(), cutoff_date.isoformat()))
+        cursor = self.conn.execute(sql, (actor.store_id, today.isoformat(), cutoff_date.isoformat()))
         return [dict(r) for r in cursor.fetchall()]
 
     def get_range_sales_summary(self, actor: Session, start_date: str, end_date: str) -> Dict[str, Any]:
@@ -139,9 +139,9 @@ class ReportService:
             SELECT COUNT(*) as count, SUM(subtotal_minor) as subtotal, 
                    SUM(discount_minor) as discount, SUM(tax_minor) as tax, SUM(total_minor) as total
             FROM sales
-            WHERE date(created_at) >= ? AND date(created_at) <= ? AND status != 'VOIDED'
+            WHERE store_id = ? AND date(created_at) >= ? AND date(created_at) <= ? AND status != 'VOIDED'
         """
-        cursor = self.conn.execute(sql, (start_date, end_date))
+        cursor = self.conn.execute(sql, (actor.store_id, start_date, end_date))
         row = cursor.fetchone()
         
         return {
@@ -162,12 +162,12 @@ class ReportService:
             FROM sale_items si
             JOIN sales s ON si.sale_id = s.id
             JOIN medicines m ON si.medicine_id = m.id
-            WHERE date(s.created_at) >= ? AND date(s.created_at) <= ? AND s.status != 'VOIDED'
+            WHERE s.store_id = ? AND date(s.created_at) >= ? AND date(s.created_at) <= ? AND s.status != 'VOIDED'
             GROUP BY m.id
             ORDER BY total_qty DESC
             LIMIT 10
         """
-        cursor = self.conn.execute(sql, (start_date, end_date))
+        cursor = self.conn.execute(sql, (actor.store_id, start_date, end_date))
         return [dict(r) for r in cursor.fetchall()]
 
     def get_sales_by_employee(self, actor: Session, start_date: str, end_date: str) -> List[Dict[str, Any]]:
@@ -176,11 +176,12 @@ class ReportService:
         sql = """
             SELECT e.id, e.username, e.full_name, COUNT(s.id) as bills_count, SUM(s.total_minor) as net_total
             FROM employees e
-            LEFT JOIN sales s ON e.id = s.employee_id AND date(s.created_at) >= ? AND date(s.created_at) <= ? AND s.status != 'VOIDED'
+            LEFT JOIN sales s ON e.id = s.employee_id AND s.store_id = ? AND date(s.created_at) >= ? AND date(s.created_at) <= ? AND s.status != 'VOIDED'
+            WHERE e.store_id = ?
             GROUP BY e.id
             ORDER BY net_total DESC
         """
-        cursor = self.conn.execute(sql, (start_date, end_date))
+        cursor = self.conn.execute(sql, (actor.store_id, start_date, end_date, actor.store_id))
         return [dict(r) for r in cursor.fetchall()]
 
     def get_sales_chart_data(self, actor: Session, days: int = 7) -> List[Dict[str, Any]]:
@@ -192,9 +193,9 @@ class ReportService:
         sql = """
             SELECT date(created_at) as sale_date, SUM(total_minor) as daily_total
             FROM sales
-            WHERE date(created_at) >= ? AND date(created_at) <= ? AND status != 'VOIDED'
+            WHERE store_id = ? AND date(created_at) >= ? AND date(created_at) <= ? AND status != 'VOIDED'
         """
-        params = [start_date, today.isoformat()]
+        params = [actor.store_id, start_date, today.isoformat()]
         
         if actor.role == "PHARMACIST":
             sql += " AND employee_id = ?"

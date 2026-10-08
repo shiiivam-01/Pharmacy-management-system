@@ -23,13 +23,20 @@ def get_current_actor(token: str = Depends(oauth2_scheme), conn: sqlite3.Connect
     # DO NOT use this plain token approach in production.
     try:
         employee_id = int(token)
-        cursor = conn.execute("SELECT * FROM employees WHERE id = ? AND is_active = 1", (employee_id,))
+        cursor = conn.execute('''
+            SELECT e.*, s.name as store_name
+            FROM employees e 
+            JOIN stores s ON e.store_id = s.id
+            WHERE e.id = ? AND e.is_active = 1
+        ''', (employee_id,))
         row = cursor.fetchone()
         if not row:
             raise Exception()
             
         return Session(
             employee_id=row["id"],
+            store_id=row["store_id"],
+            store_name=row["store_name"],
             username=row["username"],
             full_name=row["full_name"],
             role=row["role"]

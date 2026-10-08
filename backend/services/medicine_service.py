@@ -3,6 +3,7 @@ Medicine service.
 """
 import sqlite3
 from typing import List, Optional
+from datetime import date
 from backend.models import Medicine, Session
 from backend.repositories.medicine_repository import MedicineRepository
 from backend.security import require
@@ -18,55 +19,53 @@ class MedicineService:
 
     def _write_audit(self, actor: Session, action: str, entity_id: int):
         self.conn.execute(
-            "INSERT INTO audit_log (employee_id, action, entity, entity_id) VALUES (?, ?, ?, ?)",
-            (actor.employee_id, action, "Medicine", entity_id)
+            "INSERT INTO audit_log (store_id, employee_id, action, entity, entity_id) VALUES (?, ?, ?, ?, ?)",
+            (actor.store_id, actor.employee_id, action, "Medicine", entity_id)
         )
 
-    def _calculate_available_stock(self, medicine_id: int, today: date = None) -> int:
+    def _calculate_available_stock(self, store_id: int, medicine_id: int, today: date = None) -> int:
         if today is None:
-            from datetime import date
             today = date.today()
         cursor = self.conn.execute(
             """
-            SELECT sum(quantity) FROM batches 
-            WHERE medicine_id = ? AND expiry_date >= ?
+            SELECT COALESCE(SUM(quantity), 0) FROM batches 
+            WHERE store_id = ? AND medicine_id = ? AND expiry_date >= ?
             """,
-            (medicine_id, today.isoformat())
+            (store_id, medicine_id, today.isoformat())
         )
-        val = cursor.fetchone()[0]
-        return val if val else 0
+        return cursor.fetchone()[0]
 
-    def list_medicines(self, actor: Session, active_only: bool = False, category: Optional[str] = None, supplier_id: Optional[int] = None, today: date = None) -> List[Medicine]:
+    def list_medicines(self, actor: Session, active_only: bool = False, category: Optional[str] = None, today: date = None) -> List[Medicine]:
         require(actor, "medicine.view")
-        meds = self.repo.list_all(active_only, category, supplier_id)
+        meds = self.repo.list_all(actor.store_id, active_only, category)
         for m in meds:
-            m.available_stock = self._calculate_available_stock(m.id, today)
+            m.available_stock = self._calculate_available_stock(actor.store_id, m.id, today)
         return meds
 
-    def search_medicines(self, actor: Session, query: str, active_only: bool = False, category: Optional[str] = None, supplier_id: Optional[int] = None, today: date = None) -> List[Medicine]:
+    def search_medicines(self, actor: Session, query: str, active_only: bool = False, category: Optional[str] = None, today: date = None) -> List[Medicine]:
         require(actor, "medicine.view")
         query = query.strip()
         if not query:
-            return self.list_medicines(actor, active_only, category, supplier_id, today)
+            return self.list_medicines(actor, active_only, category, today)
             
-        meds = self.repo.search(query, active_only, category, supplier_id)
+        meds = self.repo.search(actor.store_id, query, active_only, category)
         for m in meds:
-            m.available_stock = self._calculate_available_stock(m.id, today)
+            m.available_stock = self._calculate_available_stock(actor.store_id, m.id, today)
         return meds
 
     def get_medicine(self, actor: Session, medicine_id: int, today: date = None) -> Medicine:
         require(actor, "medicine.view")
-        med = self.repo.get(medicine_id)
+        med = self.repo.get(actor.store_id, medicine_id)
         if not med:
             raise NotFoundError(f"Medicine ID {medicine_id} not found.")
-        med.available_stock = self._calculate_available_stock(med.id, today)
+        med.available_stock = self._calculate_available_stock(actor.store_id, med.id, today)
         return med
 
     def add_medicine(self, actor: Session, name: str, form: str, strength: str,
                      unit_price: Decimal, tax_percent: float, reorder_level: int,
                      requires_prescription: bool, generic_name: Optional[str] = None,
                      category: Optional[str] = None, manufacturer: Optional[str] = None,
-                     supplier_id: Optional[int] = None) -> Medicine:
+                     supplier_id: Optional[int] = None, description: Optional[str] = None) -> Medicine:
         require(actor, "medicine.write")
         
         name = v.validate_non_empty_text(name, "Name")
@@ -80,9 +79,9 @@ class MedicineService:
             
         try:
             med_id = self.repo.add(
-                name, generic_name, form, strength, category, manufacturer,
+                actor.store_id, name, generic_name, form, strength, category, manufacturer,
                 supplier_id, unit_price_minor, float(tax_percent), reorder_level,
-                1 if requires_prescription else 0
+                1 if requires_prescription else 0, description
             )
             self._write_audit(actor, "CREATE_MEDICINE", med_id)
             return self.get_medicine(actor, med_id)
@@ -99,7 +98,7 @@ class MedicineService:
                         generic_name: Optional[str] = None, category: Optional[str] = None,
                         manufacturer: Optional[str] = None, supplier_id: Optional[int] = None) -> Medicine:
         require(actor, "medicine.write")
-        self.get_medicine(actor, medicine_id) # check exists
+        self.get_medicine(actor, medicine_id)
         
         name = v.validate_non_empty_text(name, "Name")
         form = v.validate_non_empty_text(form, "Form")
@@ -112,7 +111,7 @@ class MedicineService:
             
         try:
             self.repo.update(
-                medicine_id, name, generic_name, form, strength, category,
+                actor.store_id, medicine_id, name, generic_name, form, strength, category,
                 manufacturer, supplier_id, unit_price_minor, float(tax_percent),
                 reorder_level, 1 if requires_prescription else 0
             )
@@ -128,11 +127,11 @@ class MedicineService:
     def deactivate_medicine(self, actor: Session, medicine_id: int) -> None:
         require(actor, "medicine.deactivate")
         self.get_medicine(actor, medicine_id)
-        self.repo.set_active(medicine_id, 0)
+        self.repo.set_active(actor.store_id, medicine_id, 0)
         self._write_audit(actor, "DEACTIVATE_MEDICINE", medicine_id)
 
     def reactivate_medicine(self, actor: Session, medicine_id: int) -> None:
-        require(actor, "medicine.deactivate") # Re-using this permission for reactivation as well, typical for Admin
+        require(actor, "medicine.deactivate")
         self.get_medicine(actor, medicine_id)
-        self.repo.set_active(medicine_id, 1)
+        self.repo.set_active(actor.store_id, medicine_id, 1)
         self._write_audit(actor, "REACTIVATE_MEDICINE", medicine_id)

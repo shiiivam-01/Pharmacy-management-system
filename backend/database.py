@@ -9,7 +9,7 @@ def connect(db_path: str = None) -> sqlite3.Connection:
         db_path = str(config.DB_PATH)
     
     # Connect
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     # Enable foreign keys and use Row factory
     conn.execute("PRAGMA foreign_keys = ON;")
     conn.row_factory = sqlite3.Row

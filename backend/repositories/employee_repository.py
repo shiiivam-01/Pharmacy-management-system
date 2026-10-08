@@ -12,26 +12,30 @@ class EmployeeRepository:
     def row_to_model(self, row: sqlite3.Row) -> Employee:
         return Employee(**dict(row))
 
-    def count(self) -> int:
-        cursor = self.conn.execute("SELECT COUNT(*) FROM employees")
+    def count(self, store_id: int) -> int:
+        cursor = self.conn.execute("SELECT COUNT(*) FROM employees WHERE store_id = ?", (store_id,))
         return cursor.fetchone()[0]
 
-    def count_active_admins(self) -> int:
-        cursor = self.conn.execute("SELECT COUNT(*) FROM employees WHERE role = 'ADMIN' AND is_active = 1")
+    def count_active_admins(self, store_id: int) -> int:
+        cursor = self.conn.execute("SELECT COUNT(*) FROM employees WHERE store_id = ? AND role = 'ADMIN' AND is_active = 1", (store_id,))
         return cursor.fetchone()[0]
 
-    def get(self, employee_id: int) -> Optional[Employee]:
-        cursor = self.conn.execute("SELECT * FROM employees WHERE id = ?", (employee_id,))
+    def get(self, store_id: int, employee_id: int) -> Optional[Employee]:
+        cursor = self.conn.execute("SELECT * FROM employees WHERE store_id = ? AND id = ?", (store_id, employee_id))
         row = cursor.fetchone()
         return self.row_to_model(row) if row else None
 
-    def add(self, full_name: str, phone: Optional[str], role: str, username: str, password_hash: str) -> int:
+    def get_all(self, store_id: int):
+        cursor = self.conn.execute("SELECT * FROM employees WHERE store_id = ? ORDER BY full_name", (store_id,))
+        return [self.row_to_model(row) for row in cursor.fetchall()]
+
+    def add(self, store_id: int, full_name: str, phone: Optional[str], role: str, username: str, password_hash: str) -> int:
         cursor = self.conn.execute(
             """
-            INSERT INTO employees (full_name, phone, role, username, password_hash)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO employees (store_id, full_name, phone, role, username, password_hash)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
-            (full_name, phone, role, username, password_hash)
+            (store_id, full_name, phone, role, username, password_hash)
         )
         return cursor.lastrowid
 

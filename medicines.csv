@@ -1,0 +1,290 @@
+name,generic_name,form,strength,category,manufacturer,unit_price,tax_percent,reorder_level,requires_prescription,description
+Paracetamol,Paracetamol,Tablet,500mg,Pain & Fever,,1.60,0,30,0,Relieves mild to moderate pain and reduces fever
+Paracetamol,Paracetamol,Tablet,650mg,Pain & Fever,,2.50,0,30,0,Higher-strength tablet for pain and fever
+Paracetamol,Paracetamol,Syrup,125mg/5ml,Pain & Fever,,55.00,0,10,0,Fever and pain relief for children
+Paracetamol,Paracetamol,Oral Drops,100mg/ml,Pain & Fever,,45.00,0,10,0,Fever relief for infants
+Ibuprofen,Ibuprofen,Tablet,400mg,Pain & Fever,,1.80,0,30,0,"Relieves pain, fever and inflammation"
+Ibuprofen,Ibuprofen,Suspension,100mg/5ml,Pain & Fever,,60.00,0,10,0,Pain and fever relief for children
+Ibuprofen + Paracetamol,Ibuprofen + Paracetamol,Tablet,400mg/325mg,Pain & Fever,,2.60,0,30,0,Combined pain and fever relief
+Diclofenac,Diclofenac,Tablet,50mg,Pain & Fever,,1.60,0,30,1,"Anti-inflammatory for joint, muscle and dental pain"
+Diclofenac + Paracetamol,Diclofenac + Paracetamol,Tablet,50mg/325mg,Pain & Fever,,3.20,0,30,1,Pain and inflammation relief
+Diclofenac,Diclofenac,Injection,75mg/3ml,Pain & Fever,,14.00,0,10,1,Injectable relief for severe pain
+Diclofenac,Diclofenac,Gel,1%,Pain & Fever,,85.00,0,10,0,Applied on skin for muscle and joint pain
+Diclofenac + Methyl Salicylate + Menthol,Diclofenac + Methyl Salicylate + Menthol,Gel,,Pain & Fever,,95.00,0,10,0,Pain-relief gel for sprains and back pain
+Aceclofenac,Aceclofenac,Tablet,100mg,Pain & Fever,,3.20,0,30,1,Relieves pain and swelling in arthritis and sprains
+Aceclofenac + Paracetamol,Aceclofenac + Paracetamol,Tablet,100mg/325mg,Pain & Fever,,4.20,0,30,1,Combined relief for joint and muscle pain
+Naproxen,Naproxen,Tablet,250mg,Pain & Fever,,4.50,0,30,1,Pain and inflammation relief for arthritis
+Etoricoxib,Etoricoxib,Tablet,60mg,Pain & Fever,,8.50,0,30,1,Long-acting pain relief for arthritis
+Etoricoxib,Etoricoxib,Tablet,90mg,Pain & Fever,,11.00,0,30,1,Stronger dose for acute joint pain
+Mefenamic Acid,Mefenamic Acid,Tablet,250mg,Pain & Fever,,2.00,0,30,1,"Relief from toothache, period pain and general pain"
+Mefenamic Acid,Mefenamic Acid,Tablet,500mg,Pain & Fever,,3.20,0,30,1,Stronger dose for period and dental pain
+Ketorolac,Ketorolac,Tablet,10mg,Pain & Fever,,3.80,0,30,1,Short-term relief of moderate to severe pain
+Menthol + Methyl Salicylate,Menthol + Methyl Salicylate,Balm,,Pain & Fever,,45.00,0,10,0,"Rub-on balm for headache, body ache and sprains"
+Thiocolchicoside,Thiocolchicoside,Tablet,4mg,Muscle & Bone,,8.50,0,30,1,Muscle relaxant for spasm and back pain
+Tizanidine,Tizanidine,Tablet,2mg,Muscle & Bone,,5.00,0,30,1,Relieves muscle stiffness and spasm
+Diacerein,Diacerein,Capsule,50mg,Muscle & Bone,,7.00,0,30,1,Eases joint pain and slows damage in osteoarthritis
+Alendronate,Alendronate,Tablet,70mg,Muscle & Bone,,25.00,0,30,1,Weekly tablet for osteoporosis
+Calcitriol,Calcitriol,Capsule,0.25mcg,Muscle & Bone,,6.50,0,30,1,Active vitamin D for bone and calcium health
+Cetirizine,Cetirizine,Tablet,10mg,Cold & Allergy,,1.30,0,30,0,"Relieves sneezing, runny nose and itchy skin"
+Cetirizine,Cetirizine,Syrup,5mg/5ml,Cold & Allergy,,48.00,0,10,0,Allergy relief for children
+Levocetirizine,Levocetirizine,Tablet,5mg,Cold & Allergy,,3.20,0,30,0,Allergy and cold relief with low drowsiness
+Levocetirizine,Levocetirizine,Syrup,2.5mg/5ml,Cold & Allergy,,65.00,0,10,0,Allergy relief for children
+Fexofenadine,Fexofenadine,Tablet,120mg,Cold & Allergy,,8.00,0,30,0,Non-sedating antihistamine for hay fever
+Fexofenadine,Fexofenadine,Tablet,180mg,Cold & Allergy,,10.50,0,30,0,Non-sedating antihistamine for hives and allergy
+Loratadine,Loratadine,Tablet,10mg,Cold & Allergy,,3.50,0,30,0,Non-sedating antihistamine for allergies
+Chlorpheniramine,Chlorpheniramine,Tablet,4mg,Cold & Allergy,,0.60,0,30,0,Relieves sneezing and runny nose; may cause drowsiness
+Pheniramine,Pheniramine,Tablet,25mg,Cold & Allergy,,1.80,0,30,1,Antihistamine for allergy and itching; causes drowsiness
+Pheniramine,Pheniramine,Injection,22.75mg/ml,Cold & Allergy,,10.00,0,10,1,Injectable antihistamine for allergic reactions
+Montelukast + Levocetirizine,Montelukast + Levocetirizine,Tablet,10mg/5mg,Cold & Allergy,,12.00,0,30,1,For allergic rhinitis with mild asthma
+Paracetamol + Phenylephrine + Chlorpheniramine,Paracetamol + Phenylephrine + Chlorpheniramine,Tablet,500mg/10mg/2mg,Cold & Allergy,,2.80,0,30,0,"Cold relief: fever, blocked nose and sneezing"
+Xylometazoline,Xylometazoline,Nasal Drops,0.1%,Cold & Allergy,,55.00,0,10,0,Quick relief from a blocked nose (adults)
+Xylometazoline,Xylometazoline,Nasal Drops,0.05%,Cold & Allergy,,50.00,0,10,0,Blocked nose relief for children
+Oxymetazoline,Oxymetazoline,Nasal Spray,0.05%,Cold & Allergy,,95.00,0,10,0,Fast nasal decongestant spray
+Sodium Chloride,Sodium Chloride,Nasal Drops,0.65%,Cold & Allergy,,55.00,0,10,0,Saline drops to loosen nasal congestion
+Fluticasone,Fluticasone,Nasal Spray,50mcg,Cold & Allergy,,290.00,0,10,1,Steroid nasal spray for allergic rhinitis
+Menthol + Eucalyptus,Menthol + Eucalyptus,Inhalant,,Cold & Allergy,,70.00,0,10,0,Inhaled for blocked nose and headache
+Menthol + Camphor + Eucalyptus,Menthol + Camphor + Eucalyptus,Ointment,,Cold & Allergy,,65.00,0,10,0,Chest and nose rub for cold relief
+Ambroxol,Ambroxol,Syrup,30mg/5ml,Cough & Respiratory,,75.00,0,10,0,Loosens mucus in productive cough
+Ambroxol,Ambroxol,Tablet,30mg,Cough & Respiratory,,3.50,0,30,0,Thins phlegm in chest congestion
+Bromhexine,Bromhexine,Tablet,8mg,Cough & Respiratory,,2.20,0,30,0,Helps clear mucus from the airways
+Bromhexine,Bromhexine,Syrup,4mg/5ml,Cough & Respiratory,,65.00,0,10,0,Expectorant for children and adults
+Guaifenesin,Guaifenesin,Syrup,100mg/5ml,Cough & Respiratory,,75.00,0,10,0,Expectorant that thins mucus
+Ambroxol + Levosalbutamol + Guaifenesin,Ambroxol + Levosalbutamol + Guaifenesin,Syrup,30mg/1mg/50mg per 5ml,Cough & Respiratory,,125.00,0,10,1,Cough with wheeze and chest congestion
+Montelukast,Montelukast,Tablet,10mg,Cough & Respiratory,,8.00,0,30,1,Prevents asthma attacks and allergy symptoms
+Salbutamol,Salbutamol,Tablet,2mg,Cough & Respiratory,,1.20,0,30,1,Relaxes airways in asthma and wheezing
+Salbutamol,Salbutamol,Inhaler,100mcg,Cough & Respiratory,,155.00,0,10,1,Quick-relief inhaler for asthma attacks
+Levosalbutamol,Levosalbutamol,Inhaler,50mcg,Cough & Respiratory,,195.00,0,10,1,Quick-relief inhaler for asthma and COPD
+Budesonide,Budesonide,Inhaler,200mcg,Cough & Respiratory,,260.00,0,10,1,Preventer inhaler for asthma
+Budesonide + Formoterol,Budesonide + Formoterol,Inhaler,200mcg/6mcg,Cough & Respiratory,,480.00,0,10,1,Combination inhaler for asthma and COPD
+Ipratropium,Ipratropium,Nebulizer Solution,500mcg/2ml,Cough & Respiratory,,22.00,0,10,1,Nebulizer for wheeze and COPD
+Budesonide,Budesonide,Nebulizer Solution,0.5mg/2ml,Cough & Respiratory,,38.00,0,10,1,Nebulizer steroid for asthma and croup
+Doxofylline,Doxofylline,Tablet,400mg,Cough & Respiratory,,8.50,0,30,1,Bronchodilator for asthma and COPD
+Amoxicillin,Amoxicillin,Capsule,250mg,Antibiotic,,3.50,0,30,1,"Penicillin antibiotic for throat, ear and chest infections"
+Amoxicillin,Amoxicillin,Capsule,500mg,Antibiotic,,6.50,0,30,1,Penicillin antibiotic for common bacterial infections
+Amoxicillin,Amoxicillin,Dry Syrup,125mg/5ml,Antibiotic,,58.00,0,10,1,Children's antibiotic for ear and throat infections
+Amoxicillin + Clavulanic Acid,Amoxicillin + Clavulanic Acid,Tablet,500mg/125mg,Antibiotic,,22.00,0,30,1,Broad-spectrum antibiotic for resistant infections
+Amoxicillin + Clavulanic Acid,Amoxicillin + Clavulanic Acid,Tablet,250mg/125mg,Antibiotic,,15.00,0,30,1,"Antibiotic for sinus, chest and skin infections"
+Amoxicillin + Clavulanic Acid,Amoxicillin + Clavulanic Acid,Dry Syrup,200mg/28.5mg per 5ml,Antibiotic,,95.00,0,10,1,Children's broad-spectrum antibiotic
+Azithromycin,Azithromycin,Tablet,250mg,Antibiotic,,13.00,0,30,1,Macrolide antibiotic for respiratory and skin infections
+Azithromycin,Azithromycin,Tablet,500mg,Antibiotic,,23.00,0,30,1,"Macrolide antibiotic, usually a short course"
+Azithromycin,Azithromycin,Suspension,200mg/5ml,Antibiotic,,70.00,0,10,1,Children's antibiotic for throat and chest infections
+Clarithromycin,Clarithromycin,Tablet,250mg,Antibiotic,,16.00,0,30,1,Macrolide antibiotic for chest and sinus infections
+Erythromycin,Erythromycin,Tablet,250mg,Antibiotic,,6.50,0,30,1,Alternative antibiotic for penicillin allergy
+Cefixime,Cefixime,Tablet,200mg,Antibiotic,,15.00,0,30,1,"Cephalosporin for typhoid, urinary and throat infections"
+Cefixime,Cefixime,Dry Syrup,100mg/5ml,Antibiotic,,85.00,0,10,1,Children's cephalosporin antibiotic
+Cefpodoxime,Cefpodoxime,Tablet,200mg,Antibiotic,,22.00,0,30,1,Cephalosporin for respiratory and urinary infections
+Cefuroxime,Cefuroxime,Tablet,500mg,Antibiotic,,42.00,0,30,1,Cephalosporin for chest and ENT infections
+Cefadroxil,Cefadroxil,Capsule,500mg,Antibiotic,,12.00,0,30,1,Cephalosporin for skin and urinary infections
+Cephalexin,Cephalexin,Capsule,500mg,Antibiotic,,9.00,0,30,1,Cephalosporin for skin and soft-tissue infections
+Ciprofloxacin,Ciprofloxacin,Tablet,500mg,Antibiotic,,4.50,0,30,1,Fluoroquinolone for urinary and stomach infections
+Ofloxacin,Ofloxacin,Tablet,200mg,Antibiotic,,4.50,0,30,1,Fluoroquinolone for urinary and gut infections
+Levofloxacin,Levofloxacin,Tablet,500mg,Antibiotic,,11.00,0,30,1,Fluoroquinolone for chest and sinus infections
+Norfloxacin + Tinidazole,Norfloxacin + Tinidazole,Tablet,400mg/600mg,Antibiotic,,6.50,0,30,1,Treats infectious diarrhoea and dysentery
+Ofloxacin + Ornidazole,Ofloxacin + Ornidazole,Tablet,200mg/500mg,Antibiotic,,8.50,0,30,1,Treats diarrhoea and dysentery
+Ciprofloxacin + Tinidazole,Ciprofloxacin + Tinidazole,Tablet,500mg/600mg,Antibiotic,,9.50,0,30,1,Treats gut infections and diarrhoea
+Doxycycline,Doxycycline,Capsule,100mg,Antibiotic,,5.50,0,30,1,"Tetracycline antibiotic for acne, chest and skin infections"
+Metronidazole,Metronidazole,Tablet,400mg,Antibiotic,,1.60,0,30,1,For amoebic dysentery and anaerobic infections
+Metronidazole,Metronidazole,Suspension,200mg/5ml,Antibiotic,,48.00,0,10,1,Children's treatment for amoebiasis and giardiasis
+Tinidazole,Tinidazole,Tablet,500mg,Antibiotic,,4.50,0,30,1,"For giardia, amoebiasis and vaginal infections"
+Ornidazole,Ornidazole,Tablet,500mg,Antibiotic,,5.50,0,30,1,For amoebic and bacterial gut infections
+Sulfamethoxazole + Trimethoprim,Sulfamethoxazole + Trimethoprim,Tablet,800mg/160mg,Antibiotic,,3.50,0,30,1,"For urinary, chest and gut infections"
+Sulfamethoxazole + Trimethoprim,Sulfamethoxazole + Trimethoprim,Suspension,200mg/40mg per 5ml,Antibiotic,,52.00,0,10,1,Children's treatment for urinary and ear infections
+Nitrofurantoin,Nitrofurantoin,Capsule,100mg,Antibiotic,,7.00,0,30,1,For urinary tract infections
+Clindamycin,Clindamycin,Capsule,300mg,Antibiotic,,22.00,0,30,1,"For dental, bone and skin infections"
+Ceftriaxone,Ceftriaxone,Injection,1g,Antibiotic,,42.00,0,10,1,Injectable cephalosporin for serious infections
+Ceftriaxone,Ceftriaxone,Injection,250mg,Antibiotic,,22.00,0,10,1,Injectable antibiotic for children
+Gentamicin,Gentamicin,Injection,80mg/2ml,Antibiotic,,9.00,0,10,1,Injectable antibiotic for severe bacterial infections
+Mupirocin,Mupirocin,Ointment,2%,Antibiotic,,155.00,0,10,1,For skin infections like impetigo and boils
+Fusidic Acid,Fusidic Acid,Cream,2%,Antibiotic,,160.00,0,10,1,Cream for infected skin and wounds
+Framycetin,Framycetin,Cream,1%,Antibiotic,,62.00,0,10,1,Antibiotic cream for cuts and infected wounds
+Neomycin + Bacitracin,Neomycin + Bacitracin,Ointment,,Antibiotic,,58.00,0,10,0,First-aid ointment to prevent infection in minor cuts
+Fluconazole,Fluconazole,Tablet,150mg,Antifungal,,26.00,0,30,1,Single-dose treatment for vaginal and skin fungal infections
+Fluconazole,Fluconazole,Tablet,200mg,Antifungal,,36.00,0,30,1,"For fungal infections of skin, mouth and nails"
+Itraconazole,Itraconazole,Capsule,100mg,Antifungal,,23.00,0,30,1,For ringworm and nail fungal infections
+Terbinafine,Terbinafine,Tablet,250mg,Antifungal,,21.00,0,30,1,"For ringworm, athlete's foot and nail fungus"
+Clotrimazole,Clotrimazole,Cream,1%,Antifungal,,68.00,0,10,0,"For ringworm, athlete's foot and jock itch"
+Miconazole,Miconazole,Cream,2%,Antifungal,,78.00,0,10,0,For fungal skin infections
+Terbinafine,Terbinafine,Cream,1%,Antifungal,,105.00,0,10,0,For athlete's foot and ringworm
+Luliconazole,Luliconazole,Cream,1%,Antifungal,,165.00,0,10,1,Antifungal cream for ringworm and jock itch
+Sertaconazole,Sertaconazole,Cream,2%,Antifungal,,155.00,0,10,1,Antifungal cream for skin infections
+Ketoconazole,Ketoconazole,Shampoo,2%,Antifungal,,195.00,0,10,1,Medicated shampoo for dandruff and scalp fungus
+Nystatin,Nystatin,Oral Drops,100000IU/ml,Antifungal,,62.00,0,10,1,For oral thrush in infants
+Clotrimazole,Clotrimazole,Vaginal Pessary,100mg,Antifungal,,16.00,0,10,1,For vaginal yeast infection
+Albendazole,Albendazole,Tablet,400mg,Antiparasitic,,12.00,0,30,1,"Dewormer for roundworm, hookworm and tapeworm"
+Albendazole,Albendazole,Suspension,200mg/5ml,Antiparasitic,,28.00,0,10,1,Children's dewormer
+Mebendazole,Mebendazole,Tablet,100mg,Antiparasitic,,5.00,0,30,1,Dewormer for worm infections
+Ivermectin,Ivermectin,Tablet,12mg,Antiparasitic,,26.00,0,30,1,"For scabies, lice and strongyloidiasis"
+Permethrin,Permethrin,Cream,5%,Antiparasitic,,155.00,0,10,1,Cream for scabies
+Benzyl Benzoate,Benzyl Benzoate,Lotion,25%,Antiparasitic,,95.00,0,10,1,Lotion for scabies and lice
+Hydroxychloroquine,Hydroxychloroquine,Tablet,200mg,Antiparasitic,,9.00,0,30,1,For malaria prevention and rheumatoid arthritis
+Chloroquine,Chloroquine,Tablet,250mg,Antiparasitic,,3.00,0,30,1,Antimalarial for vivax malaria
+Artemether + Lumefantrine,Artemether + Lumefantrine,Tablet,80mg/480mg,Antiparasitic,,85.00,0,30,1,Treats uncomplicated falciparum malaria
+Acyclovir,Acyclovir,Tablet,400mg,Antiviral,,8.50,0,30,1,"For herpes, cold sores and chickenpox"
+Acyclovir,Acyclovir,Cream,5%,Antiviral,,72.00,0,10,1,Cream for cold sores
+Oseltamivir,Oseltamivir,Capsule,75mg,Antiviral,,52.00,0,30,1,Treats influenza (flu)
+Pantoprazole,Pantoprazole,Tablet,40mg,Antacid & Ulcer,,8.50,0,30,1,Reduces stomach acid for acidity and ulcers
+Pantoprazole + Domperidone,Pantoprazole + Domperidone,Capsule SR,40mg/30mg,Antacid & Ulcer,,13.00,0,30,1,For acidity with nausea or bloating
+Pantoprazole,Pantoprazole,Injection,40mg,Antacid & Ulcer,,32.00,0,10,1,Injectable acid reducer for severe acidity
+Rabeprazole,Rabeprazole,Tablet,20mg,Antacid & Ulcer,,8.50,0,30,1,Reduces stomach acid
+Rabeprazole + Domperidone,Rabeprazole + Domperidone,Capsule SR,20mg/30mg,Antacid & Ulcer,,13.00,0,30,1,For acid reflux with nausea
+Omeprazole,Omeprazole,Capsule,20mg,Antacid & Ulcer,,3.80,0,30,1,"Treats acidity, reflux and ulcers"
+Esomeprazole,Esomeprazole,Tablet,40mg,Antacid & Ulcer,,13.00,0,30,1,Treats reflux and ulcers
+Lansoprazole,Lansoprazole,Capsule,30mg,Antacid & Ulcer,,9.00,0,30,1,Treats acid reflux and ulcers
+Famotidine,Famotidine,Tablet,20mg,Antacid & Ulcer,,3.50,0,30,1,Reduces stomach acid
+Aluminium Hydroxide + Magnesium Hydroxide + Simethicone,Aluminium Hydroxide + Magnesium Hydroxide + Simethicone,Suspension,,Antacid & Ulcer,,120.00,0,10,0,"Quick relief from acidity, gas and heartburn"
+Aluminium Hydroxide + Magnesium Hydroxide,Aluminium Hydroxide + Magnesium Hydroxide,Chewable Tablet,,Antacid & Ulcer,,1.60,0,30,0,Chewable antacid for heartburn
+Sodium Alginate + Sodium Bicarbonate + Calcium Carbonate,Sodium Alginate + Sodium Bicarbonate + Calcium Carbonate,Suspension,,Antacid & Ulcer,,145.00,0,10,0,Forms a barrier to relieve acid reflux
+Sucralfate,Sucralfate,Suspension,1g/10ml,Antacid & Ulcer,,135.00,0,10,1,Coats and protects stomach ulcers
+Simethicone,Simethicone,Chewable Tablet,40mg,Antacid & Ulcer,,1.40,0,30,0,Relieves gas and bloating
+Simethicone,Simethicone,Oral Drops,40mg/ml,Antacid & Ulcer,,72.00,0,10,0,Relieves infant colic and gas
+Ondansetron,Ondansetron,Tablet,4mg,Nausea & Vomiting,,3.50,0,30,1,Prevents and treats nausea and vomiting
+Ondansetron,Ondansetron,Injection,4mg/2ml,Nausea & Vomiting,,16.00,0,10,1,Injectable anti-vomiting medicine
+Domperidone,Domperidone,Tablet,10mg,Nausea & Vomiting,,2.20,0,30,1,"Relieves nausea, bloating and fullness"
+Domperidone,Domperidone,Suspension,1mg/ml,Nausea & Vomiting,,62.00,0,10,1,Children's anti-nausea suspension
+Metoclopramide,Metoclopramide,Tablet,10mg,Nausea & Vomiting,,1.20,0,30,1,Treats nausea and slow stomach emptying
+Dimenhydrinate,Dimenhydrinate,Tablet,50mg,Nausea & Vomiting,,2.50,0,30,0,Prevents motion sickness
+Prochlorperazine,Prochlorperazine,Tablet,5mg,Nausea & Vomiting,,2.50,0,30,1,"Treats vertigo, nausea and vomiting"
+Oral Rehydration Salts (WHO),Oral Rehydration Salts (WHO),Powder Sachet,21.8g,Diarrhoea & Probiotic,,22.00,0,30,0,Replaces fluids and salts lost in diarrhoea
+Zinc Sulphate,Zinc Sulphate,Dispersible Tablet,20mg,Diarrhoea & Probiotic,,3.50,0,30,0,Shortens childhood diarrhoea
+Racecadotril,Racecadotril,Capsule,100mg,Diarrhoea & Probiotic,,19.00,0,30,1,Reduces watery diarrhoea
+Loperamide,Loperamide,Capsule,2mg,Diarrhoea & Probiotic,,2.80,0,30,1,Slows diarrhoea; not for diarrhoea with blood or fever
+Saccharomyces boulardii,Saccharomyces boulardii,Capsule,250mg,Diarrhoea & Probiotic,,28.00,0,30,0,Probiotic for antibiotic-related diarrhoea
+Lactobacillus (Probiotic),Lactobacillus (Probiotic),Capsule,,Diarrhoea & Probiotic,,12.00,0,30,0,Probiotic for gut health
+Bacillus clausii,Bacillus clausii,Oral Suspension,2 billion spores/5ml,Diarrhoea & Probiotic,,30.00,0,10,0,Probiotic for diarrhoea and gut balance
+Lactulose,Lactulose,Solution,10g/15ml,Constipation,,195.00,0,10,0,Gentle laxative for constipation
+Bisacodyl,Bisacodyl,Tablet,5mg,Constipation,,1.20,0,30,0,Stimulant laxative for occasional constipation
+Psyllium Husk (Isabgol),Psyllium Husk (Isabgol),Powder,100g,Constipation,,125.00,0,10,0,Fibre supplement for constipation
+Liquid Paraffin + Milk of Magnesia,Liquid Paraffin + Milk of Magnesia,Emulsion,,Constipation,,125.00,0,10,0,Laxative emulsion for constipation
+Dicyclomine,Dicyclomine,Tablet,10mg,Stomach Cramps,,2.20,0,30,1,Relieves stomach cramps and IBS pain
+Dicyclomine + Paracetamol,Dicyclomine + Paracetamol,Tablet,20mg/500mg,Stomach Cramps,,4.00,0,30,1,Relieves abdominal pain and cramps
+Hyoscine Butylbromide,Hyoscine Butylbromide,Tablet,10mg,Stomach Cramps,,6.00,0,30,1,Relieves spasm-related stomach and period pain
+Drotaverine,Drotaverine,Tablet,40mg,Stomach Cramps,,3.50,0,30,1,Relieves stomach and period cramps
+Ursodeoxycholic Acid,Ursodeoxycholic Acid,Tablet,300mg,Liver & Digestive,,28.00,0,30,1,For gallstones and some liver conditions
+Metformin,Metformin,Tablet,500mg,Diabetes,,1.60,0,30,1,First-line medicine for type 2 diabetes
+Metformin,Metformin,Tablet SR,500mg,Diabetes,,2.40,0,30,1,Sustained-release; gentler on the stomach
+Metformin,Metformin,Tablet SR,1000mg,Diabetes,,4.50,0,30,1,Sustained-release higher dose
+Glimepiride,Glimepiride,Tablet,1mg,Diabetes,,3.50,0,30,1,Increases insulin release in type 2 diabetes
+Glimepiride,Glimepiride,Tablet,2mg,Diabetes,,5.50,0,30,1,Higher dose for type 2 diabetes
+Glibenclamide,Glibenclamide,Tablet,5mg,Diabetes,,1.50,0,30,1,Lowers blood sugar in type 2 diabetes
+Gliclazide,Gliclazide,Tablet,80mg,Diabetes,,4.50,0,30,1,Lowers blood sugar in type 2 diabetes
+Glimepiride + Metformin,Glimepiride + Metformin,Tablet SR,1mg/500mg,Diabetes,,6.50,0,30,1,Combination for type 2 diabetes
+Sitagliptin,Sitagliptin,Tablet,50mg,Diabetes,,21.00,0,30,1,Lowers blood sugar in type 2 diabetes
+Sitagliptin,Sitagliptin,Tablet,100mg,Diabetes,,32.00,0,30,1,Higher dose for type 2 diabetes
+Vildagliptin,Vildagliptin,Tablet,50mg,Diabetes,,13.00,0,30,1,Lowers blood sugar in type 2 diabetes
+Teneligliptin,Teneligliptin,Tablet,20mg,Diabetes,,9.00,0,30,1,Lowers blood sugar in type 2 diabetes
+Pioglitazone,Pioglitazone,Tablet,15mg,Diabetes,,4.50,0,30,1,Improves insulin sensitivity
+Voglibose,Voglibose,Tablet,0.3mg,Diabetes,,9.00,0,30,1,Reduces blood sugar rise after meals
+Dapagliflozin,Dapagliflozin,Tablet,10mg,Diabetes,,19.00,0,30,1,Lowers blood sugar through urine glucose loss
+Amlodipine,Amlodipine,Tablet,5mg,Blood Pressure,,1.70,0,30,1,Calcium-channel blocker for high blood pressure and angina
+Amlodipine,Amlodipine,Tablet,10mg,Blood Pressure,,3.20,0,30,1,Higher dose for high blood pressure
+Telmisartan,Telmisartan,Tablet,20mg,Blood Pressure,,3.50,0,30,1,For high blood pressure
+Telmisartan,Telmisartan,Tablet,40mg,Blood Pressure,,5.00,0,30,1,For high blood pressure
+Telmisartan + Amlodipine,Telmisartan + Amlodipine,Tablet,40mg/5mg,Blood Pressure,,9.00,0,30,1,Combination for high blood pressure
+Telmisartan + Hydrochlorothiazide,Telmisartan + Hydrochlorothiazide,Tablet,40mg/12.5mg,Blood Pressure,,8.00,0,30,1,Combination for high blood pressure
+Losartan,Losartan,Tablet,50mg,Blood Pressure,,3.80,0,30,1,For high blood pressure and kidney protection
+Losartan + Hydrochlorothiazide,Losartan + Hydrochlorothiazide,Tablet,50mg/12.5mg,Blood Pressure,,5.00,0,30,1,Combination for high blood pressure
+Olmesartan,Olmesartan,Tablet,20mg,Blood Pressure,,7.00,0,30,1,For high blood pressure
+Ramipril,Ramipril,Capsule,2.5mg,Blood Pressure,,5.50,0,30,1,ACE inhibitor for blood pressure and heart protection
+Enalapril,Enalapril,Tablet,5mg,Blood Pressure,,2.20,0,30,1,ACE inhibitor for blood pressure and heart failure
+Atenolol,Atenolol,Tablet,50mg,Blood Pressure,,1.80,0,30,1,Beta-blocker for blood pressure and heart rate
+Metoprolol Succinate,Metoprolol Succinate,Tablet ER,50mg,Blood Pressure,,6.00,0,30,1,Beta-blocker for blood pressure and angina
+Metoprolol Tartrate,Metoprolol Tartrate,Tablet,50mg,Blood Pressure,,3.00,0,30,1,Beta-blocker for blood pressure and angina
+Bisoprolol,Bisoprolol,Tablet,5mg,Blood Pressure,,5.50,0,30,1,Beta-blocker for blood pressure and heart failure
+Carvedilol,Carvedilol,Tablet,6.25mg,Blood Pressure,,3.50,0,30,1,For heart failure and high blood pressure
+Propranolol,Propranolol,Tablet,40mg,Blood Pressure,,1.80,0,30,1,"Beta-blocker for blood pressure, migraine and palpitations"
+Hydrochlorothiazide,Hydrochlorothiazide,Tablet,12.5mg,Blood Pressure,,1.80,0,30,1,Mild water tablet for high blood pressure
+Furosemide,Furosemide,Tablet,40mg,Blood Pressure,,1.80,0,30,1,Water tablet for swelling and heart failure
+Spironolactone,Spironolactone,Tablet,25mg,Blood Pressure,,4.50,0,30,1,Water tablet for heart failure and swelling
+Torsemide,Torsemide,Tablet,10mg,Blood Pressure,,5.50,0,30,1,Water tablet for swelling
+Aspirin,Aspirin,Tablet,75mg,Heart,,1.00,0,30,0,Low-dose blood thinner to prevent clots (use as advised)
+Clopidogrel,Clopidogrel,Tablet,75mg,Heart,,4.50,0,30,1,Prevents blood clots after heart attack or stroke
+Aspirin + Clopidogrel,Aspirin + Clopidogrel,Capsule,75mg/75mg,Heart,,7.50,0,30,1,Dual blood thinner for heart patients
+Isosorbide Mononitrate,Isosorbide Mononitrate,Tablet,20mg,Heart,,3.50,0,30,1,Prevents angina chest pain
+Isosorbide Dinitrate,Isosorbide Dinitrate,Sublingual Tablet,5mg,Heart,,1.80,0,30,1,Dissolves under the tongue for angina
+Warfarin,Warfarin,Tablet,5mg,Heart,,2.50,0,30,1,Blood thinner that needs regular monitoring
+Digoxin,Digoxin,Tablet,0.25mg,Heart,,1.80,0,30,1,For heart failure and irregular heartbeat
+Trimetazidine,Trimetazidine,Tablet MR,35mg,Heart,,6.00,0,30,1,Helps prevent angina attacks
+Ranolazine,Ranolazine,Tablet ER,500mg,Heart,,16.00,0,30,1,For long-term angina
+Atorvastatin,Atorvastatin,Tablet,10mg,Cholesterol,,4.50,0,30,1,Lowers cholesterol
+Atorvastatin,Atorvastatin,Tablet,20mg,Cholesterol,,7.00,0,30,1,Lowers cholesterol
+Atorvastatin,Atorvastatin,Tablet,40mg,Cholesterol,,10.00,0,30,1,Lowers cholesterol
+Rosuvastatin,Rosuvastatin,Tablet,10mg,Cholesterol,,9.00,0,30,1,Lowers cholesterol
+Rosuvastatin,Rosuvastatin,Tablet,20mg,Cholesterol,,13.00,0,30,1,Lowers cholesterol
+Fenofibrate,Fenofibrate,Tablet,160mg,Cholesterol,,9.00,0,30,1,Lowers triglycerides
+Levothyroxine,Levothyroxine,Tablet,25mcg,Thyroid,,1.80,0,30,1,Thyroid hormone replacement for hypothyroidism
+Levothyroxine,Levothyroxine,Tablet,50mcg,Thyroid,,2.40,0,30,1,Thyroid hormone replacement for hypothyroidism
+Levothyroxine,Levothyroxine,Tablet,100mcg,Thyroid,,3.50,0,30,1,Thyroid hormone replacement for hypothyroidism
+Carbimazole,Carbimazole,Tablet,5mg,Thyroid,,3.00,0,30,1,For overactive thyroid
+Flunarizine,Flunarizine,Tablet,5mg,Neuro & Vertigo,,3.50,0,30,1,Prevents migraine and vertigo
+Sumatriptan,Sumatriptan,Tablet,50mg,Neuro & Vertigo,,28.00,0,30,1,Treats migraine attacks
+Betahistine,Betahistine,Tablet,16mg,Neuro & Vertigo,,6.00,0,30,1,Treats vertigo and Meniere's disease
+Methylcobalamin,Methylcobalamin,Tablet,1500mcg,Neuro & Vertigo,,7.00,0,30,0,Vitamin B12 for nerve health and tingling
+Methylcobalamin,Methylcobalamin,Injection,1500mcg/ml,Vitamins & Supplements,,28.00,0,10,1,Injectable vitamin B12 for deficiency and neuropathy
+Cholecalciferol (Vitamin D3),Cholecalciferol (Vitamin D3),Capsule,60000IU,Vitamins & Supplements,,27.00,0,30,0,Weekly vitamin D for deficiency
+Cholecalciferol (Vitamin D3),Cholecalciferol (Vitamin D3),Granules Sachet,60000IU,Vitamins & Supplements,,27.00,0,30,0,Vitamin D sachet mixed in water or milk
+Cholecalciferol (Vitamin D3),Cholecalciferol (Vitamin D3),Oral Drops,400IU/ml,Vitamins & Supplements,,85.00,0,10,0,Daily vitamin D for infants
+Vitamin B-Complex,Vitamin B-Complex,Tablet,,Vitamins & Supplements,,1.80,0,30,0,Daily B vitamins for energy and nerves
+Vitamin B-Complex,Vitamin B-Complex,Syrup,,Vitamins & Supplements,,90.00,0,10,0,B vitamins syrup for appetite and energy
+Vitamin C,Vitamin C,Chewable Tablet,500mg,Vitamins & Supplements,,2.20,0,30,0,Vitamin C supplement
+Vitamin E,Vitamin E,Capsule,400mg,Vitamins & Supplements,,3.50,0,30,0,Antioxidant vitamin supplement
+Zinc Sulphate,Zinc Sulphate,Tablet,20mg,Vitamins & Supplements,,3.50,0,30,0,Zinc supplement for immunity and healing
+Zinc Sulphate,Zinc Sulphate,Syrup,20mg/5ml,Vitamins & Supplements,,62.00,0,10,0,Zinc supplement for children
+Calcium Carbonate + Vitamin D3,Calcium Carbonate + Vitamin D3,Tablet,500mg/250IU,Vitamins & Supplements,,4.80,0,30,0,Calcium and vitamin D for bones
+Ferrous Ascorbate + Folic Acid,Ferrous Ascorbate + Folic Acid,Tablet,100mg/1.5mg,Vitamins & Supplements,,5.00,0,30,0,Iron supplement for anaemia
+Ferrous Ascorbate + Folic Acid,Ferrous Ascorbate + Folic Acid,Syrup,,Vitamins & Supplements,,115.00,0,10,0,Iron syrup for anaemia
+Iron + Folic Acid (IFA),Iron + Folic Acid (IFA),Tablet,100mg/500mcg,Vitamins & Supplements,,1.20,0,30,0,Standard iron and folic acid tablet
+Folic Acid,Folic Acid,Tablet,5mg,Vitamins & Supplements,,1.20,0,30,0,For folate deficiency and pregnancy planning
+Multivitamin + Multimineral,Multivitamin + Multimineral,Capsule,,Vitamins & Supplements,,8.00,0,30,0,Daily multivitamin and mineral supplement
+Multivitamin,Multivitamin,Syrup,,Vitamins & Supplements,,105.00,0,10,0,Multivitamin syrup for children and adults
+Multivitamin,Multivitamin,Oral Drops,,Vitamins & Supplements,,72.00,0,10,0,Multivitamin drops for infants
+Omega-3 Fatty Acids,Omega-3 Fatty Acids,Capsule,1000mg,Vitamins & Supplements,,9.00,0,30,0,Fish-oil supplement for heart health
+Hydrocortisone,Hydrocortisone,Cream,1%,Skin,,58.00,0,10,1,"Mild steroid for itching, rashes and eczema"
+Betamethasone,Betamethasone,Cream,0.05%,Skin,,65.00,0,10,1,Steroid cream for inflamed or itchy skin
+Clobetasol,Clobetasol,Cream,0.05%,Skin,,95.00,0,10,1,Strong steroid cream for severe skin conditions
+Mometasone,Mometasone,Cream,0.1%,Skin,,125.00,0,10,1,Steroid cream for eczema and dermatitis
+Calamine,Calamine,Lotion,,Skin,,78.00,0,10,0,"Soothes itching, rashes and sunburn"
+Zinc Oxide,Zinc Oxide,Cream,,Skin,,72.00,0,10,0,Barrier cream for nappy rash and irritated skin
+Silver Sulfadiazine,Silver Sulfadiazine,Cream,1%,Skin,,75.00,0,10,1,Prevents infection in burns
+Benzoyl Peroxide,Benzoyl Peroxide,Gel,2.5%,Skin,,95.00,0,10,1,Treats acne
+Adapalene,Adapalene,Gel,0.1%,Skin,,125.00,0,10,1,Treats acne
+Clindamycin,Clindamycin,Gel,1%,Skin,,125.00,0,10,1,Treats acne
+Petroleum Jelly,Petroleum Jelly,Jelly,,Skin,,42.00,0,10,0,Moisturises dry skin and cracked lips
+Povidone Iodine,Povidone Iodine,Ointment,5%,Antiseptic & First Aid,,58.00,0,10,0,Antiseptic ointment for cuts and wounds
+Povidone Iodine,Povidone Iodine,Solution,5%,Antiseptic & First Aid,,88.00,0,10,0,Antiseptic solution for wounds and skin
+Chloroxylenol,Chloroxylenol,Solution,4.8%,Antiseptic & First Aid,,72.00,0,10,0,Disinfectant for washing wounds when diluted
+Hydrogen Peroxide,Hydrogen Peroxide,Solution,6%,Antiseptic & First Aid,,28.00,0,10,0,Cleans wounds and removes debris (dilute before use)
+Isopropyl Alcohol,Isopropyl Alcohol,Solution,70%,Antiseptic & First Aid,,42.00,0,10,0,Skin and surface disinfectant
+Chlorhexidine,Chlorhexidine,Mouthwash,0.2%,Dental & Throat,,92.00,0,10,0,Antiseptic mouthwash for gum problems
+Povidone Iodine,Povidone Iodine,Gargle,2%,Dental & Throat,,92.00,0,10,0,Gargle for sore throat and mouth infections
+Amylmetacresol + Dichlorobenzyl Alcohol,Amylmetacresol + Dichlorobenzyl Alcohol,Lozenge,,Dental & Throat,,4.00,0,30,0,Soothes sore throat
+Choline Salicylate,Choline Salicylate,Gel,8.7%,Dental & Throat,,75.00,0,10,0,For mouth ulcers
+Benzydamine,Benzydamine,Mouthwash,0.15%,Dental & Throat,,105.00,0,10,0,Eases sore throat and mouth pain
+Ciprofloxacin,Ciprofloxacin,Eye/Ear Drops,0.3%,Eye & Ear,,42.00,0,10,1,Antibiotic drops for eye and ear infections
+Moxifloxacin,Moxifloxacin,Eye Drops,0.5%,Eye & Ear,,95.00,0,10,1,Antibiotic drops for eye infections
+Tobramycin,Tobramycin,Eye Drops,0.3%,Eye & Ear,,72.00,0,10,1,Antibiotic drops for eye infections
+Ofloxacin,Ofloxacin,Eye Drops,0.3%,Eye & Ear,,48.00,0,10,1,Antibiotic drops for eye infections
+Chloramphenicol,Chloramphenicol,Eye Drops,0.5%,Eye & Ear,,28.00,0,10,1,Antibiotic drops for eye infections
+Olopatadine,Olopatadine,Eye Drops,0.1%,Eye & Ear,,135.00,0,10,1,"Relieves itchy, allergic eyes"
+Carboxymethylcellulose,Carboxymethylcellulose,Eye Drops,0.5%,Eye & Ear,,115.00,0,10,0,Lubricating drops for dry eyes
+Ofloxacin,Ofloxacin,Ear Drops,0.3%,Eye & Ear,,52.00,0,10,1,Antibiotic drops for ear infections
+Levonorgestrel,Levonorgestrel,Tablet,1.5mg,Women's Health,,105.00,0,30,0,Emergency contraceptive pill; take as soon as possible
+Levonorgestrel + Ethinylestradiol,Levonorgestrel + Ethinylestradiol,Tablet,0.15mg/0.03mg,Women's Health,,5.00,0,30,1,Combined oral contraceptive pill
+Tranexamic Acid,Tranexamic Acid,Tablet,500mg,Women's Health,,16.00,0,30,1,Reduces heavy menstrual bleeding
+Norethisterone,Norethisterone,Tablet,5mg,Women's Health,,5.50,0,30,1,Delays or regulates periods
+Medroxyprogesterone,Medroxyprogesterone,Tablet,10mg,Women's Health,,19.00,0,30,1,Regulates periods and treats abnormal bleeding
+Progesterone,Progesterone,Capsule,200mg,Women's Health,,32.00,0,30,1,Hormone support in some pregnancy and cycle problems
+Disodium Hydrogen Citrate,Disodium Hydrogen Citrate,Syrup,,Urinary,,115.00,0,10,0,Eases burning during urination
+Tamsulosin,Tamsulosin,Capsule,0.4mg,Urinary,,8.50,0,30,1,Eases urine flow in prostate enlargement
+Prednisolone,Prednisolone,Tablet,5mg,Steroid,,1.40,0,30,1,"Steroid for allergy, asthma and inflammation"
+Prednisolone,Prednisolone,Tablet,10mg,Steroid,,2.20,0,30,1,"Steroid for allergy, asthma and inflammation"
+Prednisolone,Prednisolone,Tablet,20mg,Steroid,,3.50,0,30,1,"Steroid for allergy, asthma and inflammation"
+Dexamethasone,Dexamethasone,Tablet,0.5mg,Steroid,,1.20,0,30,1,Steroid for allergy and inflammation
+Dexamethasone,Dexamethasone,Injection,4mg/ml,Steroid,,9.00,0,10,1,Injectable steroid for severe allergy and inflammation
+Methylprednisolone,Methylprednisolone,Tablet,4mg,Steroid,,4.50,0,30,1,Steroid for inflammation and allergy
+Adrenaline (Epinephrine),Adrenaline (Epinephrine),Injection,1mg/ml,Emergency,,16.00,0,10,1,For severe allergic reactions (anaphylaxis)
+Triphala,Triphala,Powder,100g,Ayurvedic & Herbal,,90.00,0,10,0,Traditional digestive and laxative herbal powder
+Chyawanprash,Chyawanprash,Paste,500g,Ayurvedic & Herbal,,245.00,0,10,0,Herbal tonic for immunity
+Gripe Water,Gripe Water,Syrup,,Ayurvedic & Herbal,,62.00,0,10,0,Herbal remedy for infant colic and gas
+Giloy (Guduchi),Giloy (Guduchi),Tablet,500mg,Ayurvedic & Herbal,,5.00,0,30,0,Herbal tablet for immunity
+Ashwagandha,Ashwagandha,Tablet,500mg,Ayurvedic & Herbal,,6.00,0,30,0,Herbal tablet for stress and stamina
+Herbal Cough Syrup,Herbal Cough Syrup,Syrup,,Ayurvedic & Herbal,,90.00,0,10,0,Herbal syrup for dry and mild cough

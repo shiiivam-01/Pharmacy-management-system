@@ -23,18 +23,19 @@ def search_medicines(
         results = []
         for m in meds:
             results.append(MedicineSchema(
-                id=m["id"],
-                name=m["name"],
-                generic_name=m["generic_name"],
-                form=m["form"],
-                strength=m["strength"],
-                category=m["category"],
-                manufacturer=m["manufacturer"],
-                unit_price_minor=m["unit_price_minor"],
-                tax_percent=m["tax_percent"],
-                reorder_level=m["reorder_level"],
-                requires_prescription=bool(m["requires_prescription"]),
-                is_active=bool(m["is_active"])
+                id=m.id,
+                name=m.name,
+                generic_name=m.generic_name or "",
+                form=m.form,
+                strength=m.strength,
+                category=m.category or "",
+                manufacturer=m.manufacturer or "",
+                unit_price_minor=m.unit_price_minor,
+                tax_percent=int(m.tax_percent),
+                reorder_level=m.reorder_level,
+                requires_prescription=bool(m.requires_prescription),
+                is_active=bool(m.is_active),
+                description=m.description
             ))
         return results
     except Exception as e:
